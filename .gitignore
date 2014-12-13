@@ -2,3 +2,4 @@
 config.ini
 node_modules
 js/build
+.DS_Store
