@@ -1,5 +1,5 @@
 .idea
-config.ini
+config/config.ini
 node_modules
 js/build
 .DS_Store
