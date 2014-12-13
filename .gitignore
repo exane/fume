@@ -1,2 +1,7 @@
 .idea
-config.ini
+/vendor
+
+config/config.ini
+composer.lock
+
+.DS_Store

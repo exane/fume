@@ -1,4 +1,4 @@
-var url = 'http://localhost:8888/fume/';
+var url = 'http://localhost:8888/fume/old/';
 
 $(".exane").css("margin", "0 0 10px 0");
 $(".pyxl").css("margin", "0 0 10px 0");
