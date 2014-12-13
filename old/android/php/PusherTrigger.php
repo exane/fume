@@ -13,9 +13,9 @@ require_once("../../lib/Pusher.php");
   {
     $config = parse_ini_file("../../config.ini");
 
-    defne("APP_KEY", $config['pusher_key']);
-    defne("APP_ID", $config['pusher_id']);
-    defne("APP_SECRET", $config['pusher_secret']);
+    define("APP_KEY", $config['pusher_key']);
+    define("APP_ID", $config['pusher_id']);
+    define("APP_SECRET", $config['pusher_secret']);
     define("CHANNEL", "nachrichten");
     define("EVENT", "nachrichten senden");
   }

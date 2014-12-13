@@ -2,4 +2,7 @@
 config/config.ini
 node_modules
 js/build
+/vendor
+
+composer.lock
 .DS_Store
