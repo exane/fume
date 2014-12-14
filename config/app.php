@@ -7,7 +7,7 @@
     'database' => true,
     'environment' => 'development',
 
-    'url' => 'http://localhost:8888/fume/public/',
-    'img_url' => 'http://localhost:8888/fume/public/assets/img/',
+    'url' => 'http://localhost/tim/2014/fume/public/',
+    'img_url' => 'http://localhost/tim/2014/fume/public/assets/img/',
 
   ];

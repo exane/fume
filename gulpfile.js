@@ -5,14 +5,14 @@ var sass = require("gulp-sass");
 var livereload = require("gulp-livereload");
 
 gulp.task('browserify', function(){
-    browserify('./js/src/main.js', {standalone: "fume"})
+    browserify('./resources/assets/js/main.js', {standalone: "fume"})
     .bundle().on("error", function(err){
         console.log(err);
     })
     .pipe(source('build.js').on("error", function(err){
         console.log(err);
     }))
-    .pipe(gulp.dest('./js/build/').on("error", function(err){
+    .pipe(gulp.dest('./public/assets/js/build/').on("error", function(err){
         console.log(err);
     }));
 });
