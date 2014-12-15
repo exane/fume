@@ -1,8 +1,11 @@
 .idea
+/node_modules
 /vendor
+/js/build
+/public/assets/js/build/
 
 config/config.ini
-composer.lock
-/public/.htaccess
+public/.htaccess
 
+composer.lock
 .DS_Store
