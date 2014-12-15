@@ -22,7 +22,7 @@ var Config = (function(){
         var self = this;
 
         $.ajax({
-            url: "./settings/config_loader.php",
+            url: "../public/loadConfig",
             data: "loadConfig",
             success: function(data){
                 self._cache = JSON.parse(data);

@@ -6,3 +6,4 @@ js/build
 composer.lock
 .DS_Store
 public/assets/js/build/
+public/.htaccess

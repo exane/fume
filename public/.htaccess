@@ -17,7 +17,7 @@ RewriteEngine On
 # Disallows others to look into folder
 # Options -Indexes
 
-RewriteBase /fume/public
+RewriteBase /tim/2014/fume/public
 
 # Redirect Trailing Slashes...
 RewriteRule ^(.*)/$ $1 [L,R=301]
