@@ -1,0 +1,36 @@
+.site-header {
+  float: left;
+  width: 100%;
+  background: #282828;
+  height: 50px;
+  overflow: hidden;
+}
+
+.logout {
+  float: left;
+  border-right: 1px solid #353535;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.username {
+  color: #5a5a5a;
+  float: left;
+  margin: 15px 0 0 20px;
+  font-size: 14px;
+}
+
+/**
+ * LOGO
+ */
+.site-logo {
+  background: #86b639;
+  float: left;
+  height: calc(100% - 50px);
+  width: 250px;
+  text-align: center;
+}
+
+.logo {
+  margin: 60px auto;
+}
