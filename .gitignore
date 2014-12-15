@@ -3,5 +3,6 @@
 
 config/config.ini
 composer.lock
+/public/.htaccess
 
 .DS_Store

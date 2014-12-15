@@ -7,7 +7,11 @@
      */
     public function index()
     {
-      if(session('username')->exists()) {
+      $user = new User();
+
+      if($user->isLoggedIn()) {
+        $this->setUserSession();
+
         $rndGreetings = ['Howdy', 'Hey', 'Was geht,', 'Yolo'];
 
         return $this->view('home')
@@ -15,5 +19,13 @@
       }
 
       return $this->view('login');
+    }
+
+    /**
+     * Set user session to work with them.
+     */
+    private function setUserSession()
+    {
+      session('username')->set($_COOKIE['username']);
     }
   }

@@ -22,7 +22,7 @@
     }
 
     /**
-     * Iterate over datas (shared too) and include the master view template.
+     * Iterate over data (shared too) and include the master view template.
      */
     public function __destruct()
     {
