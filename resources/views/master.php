@@ -12,14 +12,14 @@
 
   <!--[if lt IE 9]> <script src="<?php echo URL; ?>assets/js/html5shiv.js"></script> <![endif]-->
 
+
 </head>
 <body>
 
     <?php
       require session('vume_view')->get();
     ?>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="<?php echo URL; ?>assets/js/jquery-1.11.1.min.js"><\/script>')</script>
+    <script src="http://js.pusher.com/2.2/pusher.min.js"></script>
+    <script src="<?php echo URL; ?>assets/js/build/build.js"></script>
 </body>
 </html>
