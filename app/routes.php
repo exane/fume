@@ -1,11 +1,11 @@
 <?php
 
-    $route->get('/', 'HomeController@index');
+  $route->get('/', 'HomeController@index');
 
-    $route->post('/login', 'UserController@login');
-    $route->get('/logout', 'UserController@logout');
+  $route->post('/login', 'UserController@login');
+  $route->get('/logout', 'UserController@logout');
 
-    $route->get('/loadConfig', 'AjaxController@getConfig');
+  $route->get('/loadConfig', 'AjaxController@getConfig');
 
-    // test for pusher
-    $route->get('/pusher', 'UserController@pusher');
+  // test for pusher
+  $route->get('/pusher', 'UserController@pusher');
