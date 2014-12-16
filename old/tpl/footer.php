@@ -61,7 +61,7 @@
 
         nachricht2 = nachricht2.split('(str_plus)').join('+').split('(str_and)').join("&"),
             handy = "";
-        if(data.handy == "true"){
+        if(data.handy == true"){
             handy = "<i></i>";
         }
 

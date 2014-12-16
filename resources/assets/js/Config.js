@@ -1,4 +1,6 @@
+
 var $ = require("jquery");
+
 
 var Config = (function(){
     var Config = function(){
