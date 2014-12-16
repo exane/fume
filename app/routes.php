@@ -5,7 +5,7 @@
     $route->post('/login', 'UserController@login');
     $route->get('/logout', 'UserController@logout');
 
-    $route->get('/loadConfig', 'SessionController@getConfig');
+    $route->get('/loadConfig', 'AjaxController@getConfig');
 
     // test for pusher
     $route->get('/pusher', 'UserController@pusher');
