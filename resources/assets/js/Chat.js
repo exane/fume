@@ -165,7 +165,7 @@ var Chat = (function(){
             zeit: time
         }
         */
-        
+
     }
 
     r.getChatTime = function(){
