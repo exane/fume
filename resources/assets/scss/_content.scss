@@ -2,4 +2,8 @@
   float: left;
   padding: 30px;
   width: calc(100% - 650px);
+
+  @include mq(mobile) {
+    display: none;
+  }
 }

@@ -29,6 +29,10 @@
   height: calc(100% - 50px);
   width: 250px;
   text-align: center;
+
+  @include mq(mobile) {
+    display: none;
+  }
 }
 
 .logo {

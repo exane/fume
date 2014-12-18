@@ -6,4 +6,8 @@
   padding: 10px;
   position: relative;
   overflow: hidden;
+
+  @include mq(mobile) {
+    width: 100%;
+  }
 }

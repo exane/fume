@@ -3,6 +3,10 @@
   bottom: 20px;
   width: 380px;
   height: calc(100% - 20px);
+
+  @include mq(mobile) {
+    width: calc(100% - 10px);
+  }
 }
 
 .chats {

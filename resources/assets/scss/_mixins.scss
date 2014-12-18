@@ -1,0 +1,5 @@
+@mixin mq($point) {
+  @if $point == mobile {
+    @media (max-width: 700px) { @content; }
+  }
+}
