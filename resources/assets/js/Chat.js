@@ -11,12 +11,12 @@ var keyCode = {
 
 var eventName = {
     chat: {
-        channel: "nachrichten",
-        event: "nachrichten senden"
+        channel: "messages",
+        event: "send"
     },
     typing: {
-        channel: "schreiben",
-        event: "schreibt"
+        channel: "typing",
+        event: "typing"
     }
 }
 
@@ -30,7 +30,7 @@ var Chat = (function(){
 
         $.when(Config().load())
         .then(this.init.bind(this))
-        .then(this.initPusher.bind(this))
+        .then(this.initSockets.bind(this))
         .then(this.bindChannel.bind(this))
         .then(this.scrollDown.bind(this));
 
@@ -47,6 +47,7 @@ var Chat = (function(){
 
 
     r.pusher = null;
+    r.socket = null;
     r.chatChannel = null;
     r.userTypesChannel = null;
     r.userDoesntTypeChannel = null;
@@ -69,7 +70,6 @@ var Chat = (function(){
         $(".chatbox").on("keydown", this.onKeypress.bind(this));
     }
 
-
     r.setUserName = function(name){
         this._userName = name || this._userName;
     }
@@ -78,11 +78,12 @@ var Chat = (function(){
         return this._userName || "Smitty Werben Jagger Man Jensen";
     }
 
-    r.initPusher = function(){
+    r.initSockets = function(){
         var cfg = Config().get();
-        this.pusher = new Pusher(cfg["pusher_key"]);
-        this.chatChannel = this.pusher.subscribe(eventName.chat.channel);
-        this.userTypesChannel = this.pusher.subscribe(eventName.typing.channel);
+        this.socket = new FumePush("http://localhost", 8000);
+
+        this.chatChannel = this.socket.subscribe(eventName.chat.channel);
+        this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
 
         this.setUserName(cfg["username"]);
     }
@@ -117,6 +118,7 @@ var Chat = (function(){
             nachricht: "yolo",
             zeit: "17:39"
         }*/
+        data = this.isJson(data) ? JSON.parse(data) : data;
         var userName = data.benutzer;
         var isHandy = data.handy;
         var message = data.nachricht;
@@ -125,6 +127,7 @@ var Chat = (function(){
         if(userName === this.getUserName()) return;
 
         this.addMessage(userName, message, time, isHandy);
+        DisplayTyping().end();
     }
 
     r.userTypesChannelCallback = function(data){
@@ -137,14 +140,35 @@ var Chat = (function(){
         this.scrollDown();
     }
 
+    r._typingFlag = 0;
+
     r.onKeypress = function(e){
         if(e.which == keyCode.tab){
             e.preventDefault();
             this.addTab();
         }
+
+        //to prevent overhead it fires only every 3 seconds an "typing" event
+        if((this._typingFlag + 3000) < Date.now()){
+            this._typingFlag = Date.now();
+
+            this.userTypesChannel.trigger(eventName.typing.event, {
+                "benutzer": this.getUserName()
+            })
+        }
+
         if(e.which != keyCode.enter || e.shiftKey) return;
         this.sendMessage();
         return false;
+    }
+
+    r.isJson = function(str){
+        try {
+            JSON.parse(str);
+        } catch(e) {
+            return false;
+        }
+        return true;
     }
 
     r.sendMessage = function(){
@@ -157,14 +181,14 @@ var Chat = (function(){
         this.addMessage(this.getUserName(), text, time, handy);
 
         this.empty();
+        this._typingFlag = 0;
 
-        /*data = {
+        this.chatChannel.trigger(eventName.chat.event, {
             benutzer: this.getUserName(),
             handy: false,
             nachricht: text,
             zeit: time
-        }
-        */
+        })
 
     }
 

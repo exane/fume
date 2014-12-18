@@ -17,6 +17,7 @@ var DisplayTyping = (function(){
     r.$chat = null;
     r._id = null;
     r._timeoutInstance = null;
+    r._displayduration = 4000;
 
     r.start = function(){
         if(this._timeoutInstance) return this.timeout();
@@ -32,6 +33,8 @@ var DisplayTyping = (function(){
         this.timeout();
     }
     r.end = function(){
+        clearTimeout(this._timeoutInstance);
+        this._timeoutInstance = null;
         this.$chat.find(".typing").remove();
     }
 
@@ -40,7 +43,7 @@ var DisplayTyping = (function(){
         this._timeoutInstance = setTimeout(function(){
             this._timeoutInstance = null;
             this.end();
-        }.bind(this), 6000);
+        }.bind(this), this._displayduration);
     }
 
     return DisplayTyping;
