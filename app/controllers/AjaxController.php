@@ -10,6 +10,8 @@
                 if($key == "db_user" || $key == "db_pw" || $key == "db_host" || $key == "db_db") continue;
                 $res[$key] = $val;
             }
+
+            $res["username"] = session("username")->get();
             echo json_encode($res);
         }
     }
