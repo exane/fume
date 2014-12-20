@@ -7,5 +7,4 @@
 
   $route->get('/loadConfig', 'AjaxController@getConfig');
 
-  // test for pusher
-  $route->get('/pusher', 'UserController@pusher');
+  $route->post('/createDBEntry', 'ChatController@createDBEntry');

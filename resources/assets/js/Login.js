@@ -12,7 +12,6 @@ var Login = (function(){
     var r = Login.prototype;
     Login._singleton = null;
 
-
     r.event = function(){
         $("#anmelden_form").submit(this.submit.bind(this));
         $("#logout").click(this.logout.bind(this));

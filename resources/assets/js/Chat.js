@@ -187,8 +187,22 @@ var Chat = (function(){
             handy: false,
             nachricht: text,
             zeit: time
-        })
+        });
 
+      this.createDBEntry(text, handy);
+    }
+
+    r.createDBEntry = function(text, handy){
+        $.ajax({
+            url: "../public/createDBEntry",
+            type: "post",
+            data: {
+              handy: handy,
+              nachricht: text
+            }
+        }).fail(function(val){
+            // todo
+        });
     }
 
     r.getChatTime = function(){

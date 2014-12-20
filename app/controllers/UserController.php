@@ -29,13 +29,4 @@
 
       return $this->redirect()->to(URL);
     }
-
-    /**
-     * Test for pusher.
-     */
-    public function pusher()
-    {
-      $data = array("nachricht" => 'testus', "benutzer" => 'pyxl', "zeit" => '342342222', "handy" => false);
-      $this->pusher->trigger("nachrichten", "nachrichten senden", $data);
-    }
   }
