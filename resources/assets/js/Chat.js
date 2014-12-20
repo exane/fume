@@ -1,7 +1,6 @@
 var $ = require("jquery");
 var FumePush = require("./FumePushClient.js");
 var Config = require("./Config.js");
-//var Login = require("./Login.js");
 var DisplayTyping = require("./Display.js");
 
 var keyCode = {
@@ -66,7 +65,6 @@ var Chat = (function(){
 
     r.init = function(){
         this.setUrl(Config().get().url);
-        //this._login = Login();
         this.$chat = $(".chats");
         $(".chatbox").on("keydown", this.onKeypress.bind(this));
     }
