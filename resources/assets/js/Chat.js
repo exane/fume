@@ -65,6 +65,7 @@ var Chat = (function(){
 
     r.init = function(){
         this.setUrl(Config().get().url);
+        this.setChatFocus();
         this.$chat = $(".chats");
         $(".chatbox").on("keydown", this.onKeypress.bind(this));
     }
@@ -213,6 +214,12 @@ var Chat = (function(){
         minutes = minutes < 10 ? "0" + minutes : minutes;
 
         return hours + ":" + minutes;
+    }
+
+    r.setChatFocus = function(){
+        $(window).focus(function(){
+          $(".chatbox").focus();
+        });
     }
 
     r.addTab = function(){

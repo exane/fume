@@ -23,7 +23,7 @@
                 SELECT *
                 FROM ' . $this->table . '
                 ORDER BY id DESC
-                LIMIT 50
+                LIMIT 100
               ) AS `table` ORDER BY id ASC';
 
       $query = $this->db->prepare($sql);
