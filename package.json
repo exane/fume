@@ -10,9 +10,7 @@
     "gulp-sass": "^1.2.4",
     "gulp.spritesmith": "~0.1.1",
     "jquery": "^2.1.1",
-    "pusher": "^1.0.2",
-    "pusher-client": "^0.2.2",
-    "socket.io": "^1.2.1",
+    "socket.io": "^0.9.16",
     "vinyl-source-stream": "^1.0.0"
   },
   "devDependencies": {},

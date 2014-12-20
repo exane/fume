@@ -19,9 +19,8 @@
     <?php
       require session('vume_view')->get();
     ?>
-    <script type="text/javascript" src="http://localhost:8000/socket.io/socket.io.js"></script>
 
-    <script src="<?php echo URL; ?>assets/js/FumePushClient.min.js"></script>
+<!--    <script src="<?php /*echo URL; */?>assets/js/FumePushClient.min.js"></script>-->
     <script src="<?php echo URL; ?>assets/js/build/build.js"></script>
 </body>
 </html>

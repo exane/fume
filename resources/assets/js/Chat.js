@@ -1,4 +1,5 @@
 var $ = require("jquery");
+var FumePush = require("./FumePushClient.js");
 var Config = require("./Config.js");
 //var Login = require("./Login.js");
 var DisplayTyping = require("./Display.js");
@@ -80,7 +81,7 @@ var Chat = (function(){
 
     r.initSockets = function(){
         var cfg = Config().get();
-        this.socket = new FumePush("http://localhost", 8000);
+        this.socket = new FumePush(window.location.origin, 8000); //or cfg["url_origin"]
 
         this.chatChannel = this.socket.subscribe(eventName.chat.channel);
         this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
