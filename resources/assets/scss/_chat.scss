@@ -36,7 +36,6 @@
   margin: 0 0 10px;
   max-width: 310px;
   padding: 10px;
-  white-space: pre;
 }
 
 .box span {
@@ -49,6 +48,7 @@
 
 .box p {
   font-size: 14px;
+  white-space: pre-wrap;
 }
 
 .box-me {

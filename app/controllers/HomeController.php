@@ -11,11 +11,16 @@
 
       if($user->isLoggedIn()) {
         $this->setUserSession();
+        $chat = new Chat();
 
         $rndGreetings = ['Howdy', 'Hey', 'Was geht,', 'Yolo'];
+        $messages = $chat->getMessages();
+        $username = session('username')->get();
 
         return $this->view('home')
-          ->with('greeting', $rndGreetings[array_rand($rndGreetings)]);
+          ->with('greeting', $rndGreetings[array_rand($rndGreetings)])
+          ->with('messages', $messages)
+          ->with('username', $username);
       }
 
       return $this->view('login');
