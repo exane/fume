@@ -10,7 +10,7 @@
       $sql = 'INSERT INTO ' . $this->table . ' (inhalt, zeit, benutzer, handy) VALUES (:inhalt, :zeit, :benutzer, :handy)';
       $query = $this->db->prepare($sql);
 
-      $query->execute([':inhalt' => trim(input('nachricht')), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => input('handy')]);
+      $query->execute([':inhalt' => input('nachricht'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => (boolean) input('handy')]);
     }
 
     /**

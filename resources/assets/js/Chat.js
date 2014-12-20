@@ -99,7 +99,8 @@ var Chat = (function(){
         box.find("p").text(message);
         box.find("span").text(time);
 
-        //todo: handy support
+        if(isHandy)
+            box.find("span").append("<i> H</i>");
 
         this.$chat.append(box);
 
@@ -120,7 +121,7 @@ var Chat = (function(){
         }*/
         data = this.isJson(data) ? JSON.parse(data) : data;
         var userName = data.benutzer;
-        var isHandy = data.handy;
+        var isHandy = this.isHandy();
         var message = data.nachricht;
         var time = data.zeit;
 
@@ -174,7 +175,7 @@ var Chat = (function(){
     r.sendMessage = function(){
         var text = $(".chatbox").val();
         var time = this.getChatTime();
-        var handy = false;
+        var handy = this.isHandy();
 
         if(!text) return;
 
@@ -185,7 +186,7 @@ var Chat = (function(){
 
         this.chatChannel.trigger(eventName.chat.event, {
             benutzer: this.getUserName(),
-            handy: false,
+            handy: handy,
             nachricht: text,
             zeit: time
         });
@@ -201,6 +202,7 @@ var Chat = (function(){
               handy: handy,
               nachricht: text
             }
+        }).done(function(val){
         }).fail(function(val){
             // todo
         });
@@ -214,6 +216,10 @@ var Chat = (function(){
         minutes = minutes < 10 ? "0" + minutes : minutes;
 
         return hours + ":" + minutes;
+    }
+
+    r.isHandy = function(){
+      return screen.width < 500;
     }
 
     r.setChatFocus = function(){

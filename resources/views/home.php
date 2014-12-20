@@ -19,7 +19,12 @@
       <?php foreach($messages as $message): ?>
         <div class="box <?php print $message->benutzer == $username ? 'box-me' : 'box-partner'; ?>">
           <p><?php echo $message->inhalt; ?></p>
-          <span><?php echo date('H:i', $message->zeit); ?></span>
+          <span>
+            <?php
+              echo date('H:i', $message->zeit);
+              echo $message->handy ? '<i> H</i>' : '';
+            ?>
+          </span>
         </div>
       <?php endforeach; ?>
     </div>
