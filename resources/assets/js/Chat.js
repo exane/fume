@@ -44,6 +44,7 @@ var Chat = (function(){
     r._userName = null;
 
     r._tabsize = 4;
+    r._typingFlag = 0;
 
 
     r.pusher = null;
@@ -79,7 +80,7 @@ var Chat = (function(){
 
     r.initSockets = function(){
         var cfg = Config().get();
-        this.socket = new FumePush(cfg["url_origin"], 8000); //or cfg["url_origin"]
+        this.socket = new FumePush(cfg["url_origin"], 8000);
 
         this.chatChannel = this.socket.subscribe(eventName.chat.channel);
         this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
@@ -138,8 +139,6 @@ var Chat = (function(){
 
         this.scrollDown();
     }
-
-    r._typingFlag = 0;
 
     r.onKeypress = function(e){
         if(e.which == keyCode.tab){
