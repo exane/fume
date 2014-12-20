@@ -79,7 +79,7 @@ var Chat = (function(){
 
     r.initSockets = function(){
         var cfg = Config().get();
-        this.socket = new FumePush(window.location.origin, 8000); //or cfg["url_origin"]
+        this.socket = new FumePush(cfg["url_origin"], 8000); //or cfg["url_origin"]
 
         this.chatChannel = this.socket.subscribe(eventName.chat.channel);
         this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);

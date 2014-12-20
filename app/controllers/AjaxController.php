@@ -1,11 +1,15 @@
 <?php
 
-  class AjaxController extends vume\Controller {
+    class AjaxController extends vume\Controller {
 
-    public function getConfig()
-    {
-      $res = ["pusher_key" => pusher_key, "pusher_id" => pusher_id, "pusher_secret" => pusher_secret, "url" => url, "img_url" => img_url, "username" => session("username")->get()];
+        public function getConfig() {
 
-      echo json_encode($res);
+            $ini    = parse_ini_file('../config/config.ini');
+            $res = [];
+            foreach($ini as $key => $val){
+                if($key == "db_user" || $key == "db_pw" || $key == "db_host" || $key == "db_db") continue;
+                $res[$key] = $val;
+            }
+            echo json_encode($res);
+        }
     }
-  }
