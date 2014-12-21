@@ -101,7 +101,7 @@ var Chat = (function(){
         box.find("span").text(time);
 
         if(isHandy)
-            box.find("span").append("<i> H</i>");
+            box.find("span").append("<i></i>");
 
         this.$chat.append(box);
 
@@ -218,12 +218,12 @@ var Chat = (function(){
     }
 
     r.isHandy = function(){
-      return screen.width < 500;
+        return screen.width < 500;
     }
 
     r.setChatFocus = function(){
         $(window).focus(function(){
-          $(".chatbox").focus();
+            $(".chatbox").focus();
         });
     }
 
@@ -245,8 +245,7 @@ var Chat = (function(){
         var div = $(".chats");
         div.scrollTop(div.parent().height() << 10); //fuck that shit
     }
-
-
+  
     return Chat;
 })();
 
