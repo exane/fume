@@ -12,7 +12,7 @@
       $sql = 'INSERT INTO ' . $this->table . ' (inhalt, zeit, benutzer, handy) VALUES (:inhalt, :zeit, :benutzer, :handy)';
       $query = $this->db->prepare($sql);
 
-      return $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy]);
+      return $query->execute([':inhalt' => input('message', false), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy]);
     }
 
     /**

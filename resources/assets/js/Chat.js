@@ -132,8 +132,6 @@ var Chat = (function(){
         else
             box.addClass("box-partner");
 
-        message = Autolinker.link(message);
-
         box.find("p").append(message);
         box.find("span").append(time);
 
@@ -216,7 +214,7 @@ var Chat = (function(){
     }
 
     r.sendMessage = function(){
-        var text = $(".chatbox").val();
+        var text = Autolinker.link($(".chatbox").val());
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
         var handy = this.isHandy();
@@ -236,7 +234,7 @@ var Chat = (function(){
             id: id
         });
 
-        //this.createDBEntry(text, handy);
+        this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy, id){
