@@ -7,10 +7,12 @@
      */
     public function saveChatMessage()
     {
+      $handy = input('handy') == 'true' ? true : false;
+
       $sql = 'INSERT INTO ' . $this->table . ' (inhalt, zeit, benutzer, handy) VALUES (:inhalt, :zeit, :benutzer, :handy)';
       $query = $this->db->prepare($sql);
 
-      $query->execute([':inhalt' => input('nachricht'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => (boolean) input('handy')]);
+      $query->execute([':inhalt' => input('nachricht'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy]);
     }
 
     /**
