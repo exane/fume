@@ -25,7 +25,7 @@
 
     >.ps-scrollbar-y {
       @include scrollbar-default;
-      right: 0; /* there must be 'right' for ps-scrollbar-y */
+      right: -2px; /* there must be 'right' for ps-scrollbar-y */
       width: 8px;
     }
 
