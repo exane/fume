@@ -2,6 +2,7 @@ var $ = require("jquery");
 var FumePush = require("./FumePushClient.js");
 var Config = require("./Config.js");
 var DisplayTyping = require("./Display.js");
+require("perfect-scrollbar");
 
 var keyCode = {
     "enter": 13,
@@ -20,6 +21,11 @@ var eventName = {
     }
 }
 
+var chatState = {
+    TYPING: 0x1,
+    SCROLLING: 0x2
+}
+
 var Chat = (function(){
     var Chat = function(){
         if(!(this instanceof Chat))
@@ -28,12 +34,12 @@ var Chat = (function(){
         if(Chat._singleton) return Chat._singleton;
         Chat._singleton = this;
 
+
         $.when(Config().load())
         .then(this.init.bind(this))
         .then(this.initSockets.bind(this))
         .then(this.bindChannel.bind(this))
         .then(this.scrollDown.bind(this));
-
     }
     var r = Chat.prototype;
 
@@ -45,7 +51,11 @@ var Chat = (function(){
 
     r._tabsize = 4;
     r._typingFlag = 0;
+    r.chatFlag = 0;
 
+    r.initChatFlag = function(){
+        this.chatFlag = 0;
+    }
 
     r.pusher = null;
     r.socket = null;
@@ -68,7 +78,27 @@ var Chat = (function(){
         this.setUrl(Config().get().url);
         this.setChatFocus();
         this.$chat = $(".chats");
-        $(".chatbox").on("keydown", this.onKeypress.bind(this));
+
+        $(".chatbox")
+        .on("keydown", this.onKeypress.bind(this));
+
+        this.$chat
+        .on("scroll", this.onScroll.bind(this))
+        .perfectScrollbar();
+    }
+
+    r.onScroll = function(){
+        if(this.isScrollOnBottom()){
+            this.chatFlag &= ~chatState.SCROLLING;
+            return;
+        }
+        this.chatFlag |= chatState.SCROLLING;
+    }
+
+    r.isScrollOnBottom = function(){
+        var padding = parseInt(this.$chat.css("padding-top"));
+        var isDown = this.$chat.prop("scrollHeight") - this.$chat.height() - padding === this.$chat.scrollTop();
+        return isDown;
     }
 
     r.setUserName = function(name){
@@ -105,6 +135,7 @@ var Chat = (function(){
 
         this.$chat.append(box);
 
+        this.$chat.perfectScrollbar("update");
         this.scrollDown();
     }
 
@@ -115,16 +146,16 @@ var Chat = (function(){
 
     r.chatChannelCallback = function(data){
         /*data = {
-            benutzer: "exane",
+            user: "exane",
             handy: false,
-            nachricht: "yolo",
-            zeit: "17:39"
+            message: "yolo",
+            time: "17:39"
         }*/
         data = this.isJson(data) ? JSON.parse(data) : data;
-        var userName = data.benutzer;
+        var userName = data.user;
         var isHandy = this.isHandy();
-        var message = data.nachricht;
-        var time = data.zeit;
+        var message = data.message;
+        var time = data.time;
 
         if(userName === this.getUserName()) return;
 
@@ -134,9 +165,9 @@ var Chat = (function(){
 
     r.userTypesChannelCallback = function(data){
         /*data = {
-            "benutzer": "exane"
+            "user": "exane"
         }*/
-        if(data.benutzer === this.getUserName()) return;
+        if(data.user === this.getUserName()) return;
         DisplayTyping().start();
 
         this.scrollDown();
@@ -153,7 +184,7 @@ var Chat = (function(){
             this._typingFlag = Date.now();
 
             this.userTypesChannel.trigger(eventName.typing.event, {
-                "benutzer": this.getUserName()
+                user: this.getUserName()
             })
         }
 
@@ -184,13 +215,13 @@ var Chat = (function(){
         this._typingFlag = 0;
 
         this.chatChannel.trigger(eventName.chat.event, {
-            benutzer: this.getUserName(),
+            user: this.getUserName(),
             handy: handy,
-            nachricht: text,
-            zeit: time
+            message: text,
+            time: time
         });
 
-      this.createDBEntry(text, handy);
+        this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy){
@@ -198,8 +229,8 @@ var Chat = (function(){
             url: "../public/createDBEntry",
             type: "post",
             data: {
-              handy: handy,
-              nachricht: text
+                handy: handy,
+                message: text
             }
         }).done(function(val){
         }).fail(function(val){
@@ -218,12 +249,12 @@ var Chat = (function(){
     }
 
     r.isHandy = function(){
-      return screen.width < 500;
+        return screen.width < 500;
     }
 
     r.setChatFocus = function(){
         $(window).focus(function(){
-          $(".chatbox").focus();
+            $(".chatbox").focus();
         });
     }
 
@@ -242,8 +273,11 @@ var Chat = (function(){
     }
 
     r.scrollDown = function(){
-        var div = $(".chats");
-        div.scrollTop(div.parent().height() << 10); //fuck that shit
+        if(this.chatFlag & chatState.SCROLLING){
+            return;
+        }
+        this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
+        this.$chat.perfectScrollbar("update");
     }
 
 
