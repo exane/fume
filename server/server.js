@@ -14,7 +14,7 @@ setInterval(function(){
     fumePush.trigger("send", {
         user: "pyxl",
         time: "08:15",
-        handy: false,
+        handy: true,
         message: "test yo"
     });
 },1000);
