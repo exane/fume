@@ -36,19 +36,24 @@
   margin: 0 0 10px;
   max-width: 310px;
   padding: 10px;
-}
 
-.box span {
-  clear: both;
-  cursor: default;
-  float: left;
-  font-size: 11px;
-  margin: 4px 0 0;
-}
+  span {
+    clear: both;
+    cursor: default;
+    float: left;
+    font-size: 11px;
+    margin: 4px 0 0;
+  }
 
-.box p {
-  font-size: 14px;
-  white-space: pre-wrap;
+  p {
+    font-size: 14px;
+    white-space: pre-wrap;
+  }
+
+  i {
+    float: right;
+    margin: 2px 0 0 4px;
+  }
 }
 
 .box-me {
@@ -56,18 +61,26 @@
   border: 1px solid #86b639;
   color: #fff;
   float: right;
-}
 
-.box-me span {
-  color: #c2dd96;
+  span {
+    color: #c2dd96;
+  }
+
+  i {
+    @extend .sprite-handy_gruen;
+  }
 }
 
 .box-partner {
   background: none repeat scroll 0 0 #fff;
   border: 1px solid #d1d1d1;
   float: left;
-}
 
-.box-partner span {
-  color: #a7a7a7;
+  span {
+    color: #a7a7a7;
+  }
+
+  i {
+    @extend .sprite-handy_weiss;
+  }
 }

@@ -22,7 +22,7 @@
           <span>
             <?php
               echo date('H:i', $message->zeit);
-              echo $message->handy ? '<i> H</i>' : '';
+              echo $message->handy ? '<i></i>' : '';
             ?>
           </span>
         </div>
