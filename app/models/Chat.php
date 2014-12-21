@@ -24,9 +24,9 @@
               FROM (
                 SELECT *
                 FROM ' . $this->table . '
-                ORDER BY id DESC
+                ORDER BY ' . $this->primaryKey . ' DESC
                 LIMIT 100
-              ) AS `table` ORDER BY id ASC';
+              ) AS `table` ORDER BY ' . $this->primaryKey . ' ASC';
 
       $query = $this->db->prepare($sql);
       $query->execute();

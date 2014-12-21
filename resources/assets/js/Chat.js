@@ -130,7 +130,7 @@ var Chat = (function(){
         box.find("span").text(time);
 
         if(isHandy)
-            box.find("span").append("<i> H</i>");
+            box.find("span").append("<i></i>");
 
         this.$chat.append(box);
 
@@ -278,8 +278,7 @@ var Chat = (function(){
         this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
         this.$chat.perfectScrollbar("update");
     }
-
-
+  
     return Chat;
 })();
 
