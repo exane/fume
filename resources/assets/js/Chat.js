@@ -18,6 +18,10 @@ var eventName = {
     typing: {
         channel: "typing",
         event: "typing"
+    },
+    messageError: {
+        channel: "messageError",
+        event: "messageError"
     }
 }
 
@@ -61,7 +65,7 @@ var Chat = (function(){
     r.chatChannel = null;
     r.userTypesChannel = null;
     r.userDoesntTypeChannel = null;
-
+    r.messageErrorChannel = null;
 
     r.$chat = null;
 
@@ -114,12 +118,13 @@ var Chat = (function(){
 
         this.chatChannel = this.socket.subscribe(eventName.chat.channel);
         this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
+        this.messageErrorChannel = this.socket.subscribe(eventName.messageError.channel);
 
         this.setUserName(cfg["username"]);
     }
 
-    r.addMessage = function(user, message, time, isHandy){
-        var box = $("<div class='box'><p></p><span></span></div>")
+    r.addMessage = function(user, message, time, isHandy, id){
+        var box = $("<div data-id='" + id + "' class='box'><p></p><span></span></div>")
 
         if(user === this.getUserName())
             box.addClass("box-me");
@@ -141,6 +146,7 @@ var Chat = (function(){
     r.bindChannel = function(){
         this.chatChannel.bind(eventName.chat.event, this.chatChannelCallback.bind(this));
         this.userTypesChannel.bind(eventName.typing.event, this.userTypesChannelCallback.bind(this));
+        this.messageErrorChannel.bind(eventName.messageError.event, this.messageErrorCallback.bind(this));
     }
 
     r.chatChannelCallback = function(data){
@@ -152,13 +158,14 @@ var Chat = (function(){
         }*/
         data = this.isJson(data) ? JSON.parse(data) : data;
         var userName = data.user;
-        var isHandy = this.isHandy();
+        var isHandy = data.handy;
         var message = data.message;
         var time = data.time;
+        var id = data.id;
 
         if(userName === this.getUserName()) return;
 
-        this.addMessage(userName, message, time, isHandy);
+        this.addMessage(userName, message, time, isHandy, id);
         DisplayTyping().end();
     }
 
@@ -170,6 +177,10 @@ var Chat = (function(){
         DisplayTyping().start();
 
         this.scrollDown();
+    }
+
+    r.messageErrorCallback = function(data){
+        $(".box[data-id='" + data.id + "']").find("span").prepend("<b></b>");
     }
 
     r.onKeypress = function(e){
@@ -203,12 +214,13 @@ var Chat = (function(){
 
     r.sendMessage = function(){
         var text = $(".chatbox").val();
+        var id = this.getCurrentChatID();
         var time = this.getChatTime();
         var handy = this.isHandy();
 
         if(!text) return;
 
-        this.addMessage(this.getUserName(), text, time, handy);
+        this.addMessage(this.getUserName(), text, time, handy, id);
 
         this.empty();
         this._typingTimeFlag = 0;
@@ -217,13 +229,15 @@ var Chat = (function(){
             user: this.getUserName(),
             handy: handy,
             message: text,
-            time: time
+            time: time,
+            id: id
         });
 
-        this.createDBEntry(text, handy);
+        this.createDBEntry(text, handy, id);
     }
 
-    r.createDBEntry = function(text, handy){
+    r.createDBEntry = function(text, handy, id){
+        var _this = this;
         $.ajax({
             url: "../public/createDBEntry",
             type: "post",
@@ -233,7 +247,9 @@ var Chat = (function(){
             }
         }).done(function(val){
         }).fail(function(val){
-            // todo
+            _this.messageErrorChannel.trigger(eventName.messageError.event, {
+              id: id
+            });
         });
     }
 
@@ -265,6 +281,10 @@ var Chat = (function(){
             text += " ";
         }
         chatText.val(text)
+    }
+
+    r.getCurrentChatID = function(){
+        return +$(".box").last().attr("data-id") + 1;
     }
 
     r.empty = function(){

@@ -17,7 +17,7 @@
   <div class="chat-wrap">
     <div class="chats">
       <?php foreach($messages as $message): ?>
-        <div class="box <?php echo $message->benutzer == $username ? 'box-me' : 'box-partner'; ?>">
+        <div data-id="<?php echo $message->id; ?>" class="box <?php echo $message->benutzer == $username ? 'box-me' : 'box-partner'; ?>">
           <p><?php echo $message->inhalt; ?></p>
           <span>
             <?php
