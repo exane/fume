@@ -3,6 +3,7 @@ var FumePush = require("./FumePushClient.js");
 var Config = require("./Config.js");
 var DisplayTyping = require("./Display.js");
 require("perfect-scrollbar");
+var Autolinker = require("autolinker");
 
 var keyCode = {
     "enter": 13,
@@ -131,8 +132,10 @@ var Chat = (function(){
         else
             box.addClass("box-partner");
 
-        box.find("p").text(message);
-        box.find("span").text(time);
+        message = Autolinker.link(message);
+
+        box.find("p").append(message);
+        box.find("span").append(time);
 
         if(isHandy)
             box.find("span").append("<i></i>");
@@ -233,7 +236,7 @@ var Chat = (function(){
             id: id
         });
 
-        this.createDBEntry(text, handy, id);
+        //this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy, id){
