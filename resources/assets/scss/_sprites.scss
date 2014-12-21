@@ -42,13 +42,19 @@
 }
 .sprite-play_fume {
   background-image: url(../img/sprite.png);
-  background-position: 0px -92px;
+  background-position: 0px -108px;
   width: 74px;
   height: 49px;
 }
-.sprite-user {
+.sprite-search {
   background-image: url(../img/sprite.png);
   background-position: 0px -76px;
+  width: 16px;
+  height: 16px;
+}
+.sprite-user {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -92px;
   width: 12px;
   height: 16px;
 }

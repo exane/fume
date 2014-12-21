@@ -1,6 +1,11 @@
 <header class="site-header">
   <a href="<?php echo URL; ?>logout" class="logout"><i class="sprite-logout"></i></a>
   <span class="username"><?php echo $greeting . ' ' . session('username')->get(); ?></span>
+
+  <div class="search">
+    <i class="sprite-search"></i>
+    <input type="text" placeholder="Suche">
+  </div>
 </header>
 
 <aside class="site-logo">
