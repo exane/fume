@@ -3,6 +3,7 @@
 /vendor
 /js/build
 /public/assets/js/build/
+/public/assets/img/sprite.png
 
 config/config.ini
 public/.htaccess

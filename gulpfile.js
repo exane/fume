@@ -4,6 +4,25 @@ var source = require('vinyl-source-stream');
 var sass = require("gulp-sass");
 var livereload = require("gulp-livereload");
 var spritesmith = require('gulp.spritesmith');
+var fs = require("fs");
+
+gulp.task("setup config", function(){
+    fs.exists(__dirname + "/config/config.ini", function(exists){
+        if(exists) {
+            console.log("Config.ini already exists.");
+            return;
+        }
+
+        console.log("Config.ini doesnt exists. Copy new one from example.");
+        fs.readFile(__dirname + "/resources/config.example.ini", function(err, data){
+            if(err) throw err;
+            fs.writeFile(__dirname + "/config/config.ini", data, function(err){
+                if(err) throw err;
+                console.log("Config.ini successfully created.");
+            })
+        })
+    })
+})
 
 gulp.task('browserify', function(){
     browserify('./resources/assets/js/main.js', {standalone: "fume"})
@@ -56,4 +75,4 @@ gulp.task("watch", function(){
     gulp.watch('./resources/assets/img/**/*.png', ["sprite"]);
 })
 
-gulp.task("default", ["browserify", "sass", "watch", "sprite"]);
+gulp.task("default", ["browserify", "sass", "watch", "sprite", "setup config"]);
