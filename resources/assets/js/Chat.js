@@ -22,8 +22,7 @@ var eventName = {
 }
 
 var chatState = {
-    TYPING: 0x1,
-    SCROLLING: 0x2
+    SCROLLING: 0x1
 }
 
 var Chat = (function(){
@@ -50,7 +49,7 @@ var Chat = (function(){
     r._userName = null;
 
     r._tabsize = 4;
-    r._typingFlag = 0;
+    r._typingTimeFlag = 0;
     r.chatFlag = 0;
 
     r.initChatFlag = function(){
@@ -180,8 +179,8 @@ var Chat = (function(){
         }
 
         //to prevent overhead it fires only every 3 seconds an "typing" event
-        if((this._typingFlag + 3000) < Date.now()){
-            this._typingFlag = Date.now();
+        if((this._typingTimeFlag + 3000) < Date.now()){
+            this._typingTimeFlag = Date.now();
 
             this.userTypesChannel.trigger(eventName.typing.event, {
                 user: this.getUserName()
@@ -212,7 +211,7 @@ var Chat = (function(){
         this.addMessage(this.getUserName(), text, time, handy);
 
         this.empty();
-        this._typingFlag = 0;
+        this._typingTimeFlag = 0;
 
         this.chatChannel.trigger(eventName.chat.event, {
             user: this.getUserName(),
