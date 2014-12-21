@@ -66,6 +66,7 @@ var Chat = (function(){
 
     r.init = function(){
         this.setUrl(Config().get().url);
+        this.setChatFocus();
         this.$chat = $(".chats");
         $(".chatbox").on("keydown", this.onKeypress.bind(this));
     }
@@ -99,7 +100,8 @@ var Chat = (function(){
         box.find("p").text(message);
         box.find("span").text(time);
 
-        //todo: handy support
+        if(isHandy)
+            box.find("span").append("<i> H</i>");
 
         this.$chat.append(box);
 
@@ -120,7 +122,7 @@ var Chat = (function(){
         }*/
         data = this.isJson(data) ? JSON.parse(data) : data;
         var userName = data.benutzer;
-        var isHandy = data.handy;
+        var isHandy = this.isHandy();
         var message = data.nachricht;
         var time = data.zeit;
 
@@ -172,7 +174,7 @@ var Chat = (function(){
     r.sendMessage = function(){
         var text = $(".chatbox").val();
         var time = this.getChatTime();
-        var handy = false;
+        var handy = this.isHandy();
 
         if(!text) return;
 
@@ -183,11 +185,26 @@ var Chat = (function(){
 
         this.chatChannel.trigger(eventName.chat.event, {
             benutzer: this.getUserName(),
-            handy: false,
+            handy: handy,
             nachricht: text,
             zeit: time
-        })
+        });
 
+      this.createDBEntry(text, handy);
+    }
+
+    r.createDBEntry = function(text, handy){
+        $.ajax({
+            url: "../public/createDBEntry",
+            type: "post",
+            data: {
+              handy: handy,
+              nachricht: text
+            }
+        }).done(function(val){
+        }).fail(function(val){
+            // todo
+        });
     }
 
     r.getChatTime = function(){
@@ -198,6 +215,16 @@ var Chat = (function(){
         minutes = minutes < 10 ? "0" + minutes : minutes;
 
         return hours + ":" + minutes;
+    }
+
+    r.isHandy = function(){
+      return screen.width < 500;
+    }
+
+    r.setChatFocus = function(){
+        $(window).focus(function(){
+          $(".chatbox").focus();
+        });
     }
 
     r.addTab = function(){

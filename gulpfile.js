@@ -53,7 +53,7 @@ gulp.task("watch", function(){
     gulp.watch("./resources/**/*.js", ["browserify"]);
     //gulp.watch("./src/data/*.js", ["browserify"]);
     gulp.watch('./resources/assets/scss/**/*.scss', ["sass"]);
-    gulp.watch('./resources/assets/img/*.png', ["sprite"]);
+    gulp.watch('./resources/assets/img/**/*.png', ["sprite"]);
 })
 
 gulp.task("default", ["browserify", "sass", "watch", "sprite"]);
