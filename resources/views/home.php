@@ -1,5 +1,5 @@
 <header class="site-header">
-  <a href="<?php echo URL; ?>logout" class="logout">X</a>
+  <a href="<?php echo URL; ?>logout" class="logout"><i class="sprite-logout"></i></a>
   <span class="username"><?php echo $greeting . ' ' . session('username')->get(); ?></span>
 </header>
 

@@ -11,6 +11,15 @@
   border-right: 1px solid #353535;
   height: 100%;
   padding: 0 20px;
+
+  &:hover {
+    opacity: .5;
+  }
+}
+
+.sprite-logout {
+  float: left;
+  margin: 17px 0 0 0;
 }
 
 .username {
