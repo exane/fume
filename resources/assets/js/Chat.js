@@ -224,7 +224,8 @@ var Chat = (function(){
     }
 
     r.sendMessage = function(){
-        var text = Autolinker.link($(".chatbox").val());
+       // var text = Autolinker.link($(".chatbox").val());
+        var text = this.parseLink($(".chatbox").val());
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
         var handy = this.isHandy();
@@ -266,6 +267,24 @@ var Chat = (function(){
             _this.chatChannel.trigger(channel.chat.event.messageError, {
                 id: id
             });
+        });
+    }
+
+    r.parseLink = function(input){
+        return Autolinker.link( input, {
+            replaceFn : function( autolinker, match ) {
+
+                var url = match.getUrl();
+
+                switch(url) {
+                    case 'url' :
+                        if(url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+                            return "<a href='" + url + "' target='_blank'><img src='" + url + "'></a>";
+                        }
+
+                        return true;
+                }
+            }
         });
     }
 
