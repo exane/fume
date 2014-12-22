@@ -12,7 +12,7 @@
       $sql = 'INSERT INTO ' . $this->table . ' (inhalt, zeit, benutzer, handy) VALUES (:inhalt, :zeit, :benutzer, :handy)';
       $query = $this->db->prepare($sql);
 
-      $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy]);
+      return $query->execute([':inhalt' => input('message', false), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy]);
     }
 
     /**
@@ -20,12 +20,12 @@
      */
     public function getMessages()
     {
-      $sql = 'SELECT inhalt, benutzer, zeit, handy
+      $sql = 'SELECT id, inhalt, benutzer, zeit, handy
               FROM (
                 SELECT *
                 FROM ' . $this->table . '
                 ORDER BY ' . $this->primaryKey . ' DESC
-                LIMIT 100
+                LIMIT 50
               ) AS `table` ORDER BY ' . $this->primaryKey . ' ASC';
 
       $query = $this->db->prepare($sql);

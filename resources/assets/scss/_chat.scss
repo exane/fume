@@ -7,7 +7,7 @@
   height: calc(100% - 20px);
 
   @include mq(mobile) {
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
   }
 }
 
@@ -57,6 +57,12 @@
   i {
     float: right;
     margin: 2px 0 0 4px;
+  }
+
+  b {
+    float: right;
+    margin: 3px 0 0 5px;
+    @extend .sprite-message_error;
   }
 }
 

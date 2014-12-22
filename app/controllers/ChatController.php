@@ -9,6 +9,8 @@
     {
       $chat = new Chat();
 
-      if( ! $chat->saveChatMessage()) return false;
+      if( ! $chat->saveChatMessage()) {
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+      }
     }
   }
