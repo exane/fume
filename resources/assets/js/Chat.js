@@ -307,12 +307,17 @@ var Chat = (function(){
         $(".chatbox").val("");
     }
 
-    r.scrollDown = function(){
-        if(this.chatFlag & chatState.SCROLLING){
+    r.scrollDown = function(force){
+        force = force || false;
+        if(!force && (this.chatFlag & chatState.SCROLLING)){
             return;
         }
         this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
         this.$chat.perfectScrollbar("update");
+
+        if(!this.isScrollOnBottom()){
+            this.scrollDown(true);
+        }
     }
 
     return Chat;
