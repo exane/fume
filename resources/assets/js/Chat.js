@@ -223,7 +223,7 @@ var Chat = (function(){
             time: time
         });
 
-        //this.createDBEntry(text, handy);
+        this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy){
