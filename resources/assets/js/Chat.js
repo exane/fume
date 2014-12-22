@@ -5,6 +5,7 @@ var DisplayTyping = require("./Display.js");
 require("perfect-scrollbar");
 var Autolinker = require("autolinker");
 var TabLibrary = require("./behave.js");
+var Meme = require("./Meme.js");
 
 var keyCode = {
     "enter": 13,
@@ -228,7 +229,12 @@ var Chat = (function(){
         var time = this.getChatTime();
         var handy = this.isHandy();
 
-        if(!text) return;
+        if(!$.trim(text)) {
+            this.empty();
+            return;
+        }
+
+        text = Meme.convert(text);
 
         this.addMessage(this.getUserName(), text, time, handy, id);
 
