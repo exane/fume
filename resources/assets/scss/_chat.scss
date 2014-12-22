@@ -9,6 +9,7 @@
   @include mq(mobile) {
     width: calc(100% - 20px);
   }
+  display: none;
 }
 
 .chats {
@@ -92,6 +93,21 @@
 
   i {
     @extend .sprite-handy_weiss;
+  }
+}
+
+.splashscreen {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: calc(40% - 128px/2);
+  left: calc(50% - 124px/2);
+
+  span {
+    position: absolute;
+    //float: left;
+    display: block;
+    left: 30px;
   }
 }
 

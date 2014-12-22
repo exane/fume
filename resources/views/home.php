@@ -19,6 +19,10 @@
 </section>
 
 <aside class="site-tools">
+    <div class="splashscreen">
+        <img id="splashscreenloader" src="<?php echo img_url ?>splashscreenloader.gif">
+        <span>Lade Chat</span>
+    </div>
   <div class="chat-wrap">
     <div class="chats">
       <?php foreach($messages as $message): ?>
@@ -36,4 +40,5 @@
     <textarea class="chatbox" placeholder="Schreib eine Nachricht..."
               data-cookie="<?php echo $username; ?>" autofocus></textarea>
   </div>
+
 </aside>

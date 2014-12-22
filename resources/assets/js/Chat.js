@@ -98,6 +98,8 @@ var Chat = (function(){
         this.$chat
         .on("scroll", this.onScroll.bind(this))
         .perfectScrollbar();
+
+        $(window).ready(this.hideSplashScreen.bind(this));
     }
 
     r.onScroll = function(){
@@ -318,6 +320,11 @@ var Chat = (function(){
         if(!this.isScrollOnBottom()){
             this.scrollDown(true);
         }
+    }
+
+    r.hideSplashScreen = function(){
+        $(".splashscreen").hide();
+        $(".chat-wrap").show();
     }
 
     return Chat;
