@@ -52,6 +52,8 @@
   p {
     font-size: 14px;
     white-space: pre-wrap;
+    float: left;
+    clear: both;
   }
 
   i {
@@ -63,6 +65,17 @@
     float: right;
     margin: 3px 0 0 5px;
     @extend .sprite-message_error;
+  }
+
+  em {
+    display: inline-block;
+    left: 22px;
+    max-width: 150px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 1px;
+    white-space: nowrap;
   }
 }
 
@@ -96,13 +109,19 @@
 }
 
 .youtube-link {
+  display: inline-block;
   font-size: 12px;
-  text-decoration: none;
+  position: relative;
+  width: 170px;
+  height: 12px;
 
-  img {
+  small {
     @extend .sprite-youtube;
     display: inline-block;
+    left: 0;
     margin: 0 3px 0 2px;
+    position: absolute;
+    top: 0;
   }
 
   .box-me & {

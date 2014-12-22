@@ -57,6 +57,8 @@ var Chat = (function(){
 
     r.editor = null;
 
+    r.isYoutubeLink = null;
+
     r.initChatFlag = function(){
         this.chatFlag = 0;
     }
@@ -81,7 +83,7 @@ var Chat = (function(){
     r.init = function(){
         this.setUrl(Config().get().url);
         this.setChatFocus();
-        this.handleYoutubeLinks();
+        this.handleYoutubeLinksClick();
         this.$chat = $(".chats");
 
         this.editor = new TabLibrary({
@@ -225,7 +227,6 @@ var Chat = (function(){
     }
 
     r.sendMessage = function(){
-       // var text = Autolinker.link($(".chatbox").val());
         var text = this.parseLink($(".chatbox").val());
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
@@ -238,7 +239,10 @@ var Chat = (function(){
 
         text = Meme.convert(text);
 
-        this.addMessage(this.getUserName(), text, time, handy, id);
+        this.addMessage(this.getUserName(), text, time, handy, id, this.isYoutubeLink);
+
+        this.convertYoutubeLinks();
+        text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
 
         this.empty();
         this._typingTimeFlag = 0;
@@ -250,6 +254,8 @@ var Chat = (function(){
             time: time,
             id: id
         });
+
+        text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
 
         this.createDBEntry(text, handy);
     }
@@ -272,6 +278,8 @@ var Chat = (function(){
     }
 
     r.parseLink = function(input){
+        var _this = this;
+
         return Autolinker.link( input, {
             replaceFn : function( autolinker, match ) {
 
@@ -286,8 +294,8 @@ var Chat = (function(){
 
                         // Youtube.
                         if(url.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)){
-                            return "<a class='youtube-link' href='" + RegExp.$1 + "'><img>" + RegExp.$1 + "</a>";
-                            //return RegExp.$1;
+                            _this.isYoutubeLink = true;
+                            return "<a class='youtube-link' href='" + RegExp.$1 + "'><small></small><em></em></a>";
                         }
 
                         return true;
@@ -316,13 +324,32 @@ var Chat = (function(){
         });
     }
 
-    r.handleYoutubeLinks = function(){
+    r.handleYoutubeLinksClick = function(){
         $(document).on("click", ".youtube-link", function(){
             var id = $(this).attr("href");
             $(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
 
             return false;
         });
+    }
+
+    r.convertYoutubeLinks = function(){
+        var youtubeBox;
+
+        if(this.isYoutubeLink) {
+            youtubeBox = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']");
+
+            youtubeBox.find(".youtube-link").each(function(index, value){
+                $.ajax({
+                    url: "../public/getYoutubeTitle/" +  $(this).attr("href"),
+                    async: false
+                }).done(function(val){
+                    youtubeBox.find(".youtube-link:eq(" + index + ")").find("em").text(val);
+                });
+            });
+
+            this.isYoutubeLink = null;
+        }
     }
 
     r.addTab = function(){
