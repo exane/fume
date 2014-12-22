@@ -4,6 +4,7 @@ var Config = require("./Config.js");
 var DisplayTyping = require("./Display.js");
 require("perfect-scrollbar");
 var Autolinker = require("autolinker");
+var TabLibrary = require("./behave.js");
 
 var keyCode = {
     "enter": 13,
@@ -11,18 +12,14 @@ var keyCode = {
     "tab": 9
 }
 
-var eventName = {
+var channel = {
     chat: {
-        channel: "messages",
-        event: "send"
-    },
-    typing: {
-        channel: "typing",
-        event: "typing"
-    },
-    messageError: {
-        channel: "messageError",
-        event: "messageError"
+        channelName: "chat",
+        event: {
+            message: "send",
+            typing: "typing",
+            messageError: "messageError"
+        }
     }
 }
 
@@ -57,16 +54,18 @@ var Chat = (function(){
     r._typingTimeFlag = 0;
     r.chatFlag = 0;
 
+    r.editor = null;
+
     r.initChatFlag = function(){
         this.chatFlag = 0;
     }
-
-    r.pusher = null;
+    /*
+        r.pusher = null;*/
     r.socket = null;
     r.chatChannel = null;
-    r.userTypesChannel = null;
-    r.userDoesntTypeChannel = null;
-    r.messageErrorChannel = null;
+    /*
+        r.userTypesChannel = null;
+        r.messageErrorChannel = null;*/
 
     r.$chat = null;
 
@@ -82,6 +81,15 @@ var Chat = (function(){
         this.setUrl(Config().get().url);
         this.setChatFocus();
         this.$chat = $(".chats");
+
+        this.editor = new TabLibrary({
+            textarea: document.querySelector(".chatbox"),
+            replaceTab: true,
+            softTabs: true,
+            tabSize: this._tabsize,
+            autoOpen: true,
+            autoStrip: true
+        });
 
         $(".chatbox")
         .on("keydown", this.onKeypress.bind(this));
@@ -117,9 +125,10 @@ var Chat = (function(){
         var cfg = Config().get();
         this.socket = new FumePush(cfg["url_origin"], 8000);
 
-        this.chatChannel = this.socket.subscribe(eventName.chat.channel);
-        this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
-        this.messageErrorChannel = this.socket.subscribe(eventName.messageError.channel);
+        this.chatChannel = this.socket.subscribe(channel.chat.channelName);
+        /*
+                this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
+                this.messageErrorChannel = this.socket.subscribe(eventName.messageError.channel);*/
 
         this.setUserName(cfg["username"]);
     }
@@ -145,9 +154,9 @@ var Chat = (function(){
     }
 
     r.bindChannel = function(){
-        this.chatChannel.bind(eventName.chat.event, this.chatChannelCallback.bind(this));
-        this.userTypesChannel.bind(eventName.typing.event, this.userTypesChannelCallback.bind(this));
-        this.messageErrorChannel.bind(eventName.messageError.event, this.messageErrorCallback.bind(this));
+        this.chatChannel.bind(channel.chat.event.message, this.chatChannelCallback.bind(this));
+        this.chatChannel.bind(channel.chat.event.typing, this.userTypesChannelCallback.bind(this));
+        this.chatChannel.bind(channel.chat.event.messageError, this.messageErrorCallback.bind(this));
     }
 
     r.chatChannelCallback = function(data){
@@ -185,16 +194,16 @@ var Chat = (function(){
     }
 
     r.onKeypress = function(e){
-        if(e.which == keyCode.tab){
+        /*if(e.which == keyCode.tab){
             e.preventDefault();
             this.addTab();
-        }
+        }*/
 
         //to prevent overhead it fires only every 3 seconds an "typing" event
         if((this._typingTimeFlag + 3000) < Date.now()){
             this._typingTimeFlag = Date.now();
 
-            this.userTypesChannel.trigger(eventName.typing.event, {
+            this.chatChannel.trigger(channel.chat.event.typing, {
                 user: this.getUserName()
             })
         }
@@ -226,7 +235,7 @@ var Chat = (function(){
         this.empty();
         this._typingTimeFlag = 0;
 
-        this.chatChannel.trigger(eventName.chat.event, {
+        this.chatChannel.trigger(channel.chat.event.message, {
             user: this.getUserName(),
             handy: handy,
             message: text,
@@ -248,8 +257,8 @@ var Chat = (function(){
             }
         }).done(function(val){
         }).fail(function(val){
-            _this.messageErrorChannel.trigger(eventName.messageError.event, {
-              id: id
+            _this.chatChannel.trigger(channel.chat.event.messageError, {
+                id: id
             });
         });
     }
@@ -299,7 +308,7 @@ var Chat = (function(){
         this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
         this.$chat.perfectScrollbar("update");
     }
-  
+
     return Chat;
 })();
 

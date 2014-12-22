@@ -12,7 +12,7 @@ fumePush.bind("typing", function(data){
 
 setInterval(function(){
     fumePush.trigger("send", {
-        user: "pyxl",
+        user: "fitch",
         time: "08:15",
         handy: true,
         message: "test yo"

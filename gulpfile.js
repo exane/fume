@@ -68,11 +68,17 @@ gulp.task('sprite', function () {
   spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
 });
 
+gulp.task("copyStaticImges", function(){
+    gulp.src("./resources/assets/img/static/*.*")
+    .pipe(gulp.dest("./public/assets/img/"));
+})
+
 gulp.task("watch", function(){
     gulp.watch("./resources/**/*.js", ["browserify"]);
     //gulp.watch("./src/data/*.js", ["browserify"]);
     gulp.watch('./resources/assets/scss/**/*.scss', ["sass"]);
     gulp.watch('./resources/assets/img/**/*.png', ["sprite"]);
+    gulp.watch('./resources/assets/img/static/*.*', ["copyStaticImges"]);
 })
 
-gulp.task("default", ["browserify", "sass", "watch", "sprite", "setup config"]);
+gulp.task("default", ["copyStaticImges", "browserify", "sass", "watch", "sprite", "setup config"]);
