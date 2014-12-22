@@ -278,10 +278,10 @@ var Chat = (function(){
 
                 var url = match.getUrl();
 
-                switch(url) {
+                switch(match.getType()) {
                     case 'url' :
                         if(url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
-                            return "<a href='" + url + "' target='_blank'><img src='" + url + "'></a>";
+                            return "<a href='" + url + "' target='_blank'><img class='chat-img' src='" + url + "'></a>";
                         }
 
                         return true;

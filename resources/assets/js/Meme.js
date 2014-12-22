@@ -14,7 +14,7 @@ var Meme = (function(){
         var img, times, res = text, tmp, arr = [];
         while((arr = regex.exec(text)) != null){
             img = arr[1];
-            times = arr[2];
+            times = +arr[2];
             tmp = "";
             for(var i=0; i<times; i++){
                 tmp += img;
