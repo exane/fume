@@ -9,7 +9,7 @@ var fs = require("fs");
 gulp.task("setup config", function(){
     fs.exists(__dirname + "/config/config.ini", function(exists){
         if(exists) {
-            console.log("Config.ini already exists.");
+            //console.log("Config.ini already exists.");
             return;
         }
 
