@@ -26,7 +26,8 @@ setInterval(function(){
         handy: false,
         id: id++
     });
-}, 1000)*/
+}, 1000)
+*/
 
 
 

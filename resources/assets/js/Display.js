@@ -73,7 +73,7 @@ var DisplayTyping = (function(){
 
     r.updateTitle = function(){
         if(!this._messageCounter || this.isWindowActive){
-            document.title = this._title;
+            document.title = this._title || this._originTitle;
             return;
         }
         document.title = "(" + this._messageCounter + ") "+ this._title;
