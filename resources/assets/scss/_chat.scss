@@ -119,6 +119,10 @@
   width: 170px;
   height: 12px;
 
+  &:active em {
+    opacity: .6;
+  }
+
   small {
     @extend .sprite-youtube;
     display: inline-block;
@@ -136,6 +140,7 @@
     color: #868686;
   }
 }
+
 .splashscreen {
   height: 100%;
   width: 100%;
