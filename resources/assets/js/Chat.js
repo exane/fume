@@ -2,10 +2,9 @@ var $ = require("jquery");
 var FumePush = require("./FumePushClient.js");
 var Config = require("./Config.js");
 var DisplayTyping = require("./Display.js");
-require("perfect-scrollbar");
 var Autolinker = require("autolinker");
-var TabLibrary = require("./behave.js");
 var Meme = require("./Meme.js");
+var Tab = require("./taboverride.js");
 
 var keyCode = {
     "enter": 13,
@@ -24,8 +23,9 @@ var channel = {
     }
 }
 
-var chatState = {
-    SCROLLING: 0x1
+var flags = {
+    SCROLLING: 0x1,
+    YOUTUBE_LINK: 0x2
 }
 
 var Chat = (function(){
@@ -53,22 +53,13 @@ var Chat = (function(){
 
     r._tabsize = 4;
     r._typingTimeFlag = 0;
-    r.chatFlag = 0;
+    r._chatFlag = null;
 
-    r.editor = null;
 
-    r.isYoutubeLink = null;
 
-    r.initChatFlag = function(){
-        this.chatFlag = 0;
-    }
-    /*
-        r.pusher = null;*/
     r.socket = null;
     r.chatChannel = null;
-    /*
-        r.userTypesChannel = null;
-        r.messageErrorChannel = null;*/
+
 
     r.$chat = null;
 
@@ -82,35 +73,41 @@ var Chat = (function(){
 
     r.init = function(){
         this.setUrl(Config().get().url);
+        this.initChatFlag();
         this.setChatFocus();
         this.handleYoutubeLinksClick();
         this.$chat = $(".chats");
 
-        this.editor = new TabLibrary({
-            textarea: document.querySelector(".chatbox"),
-            replaceTab: true,
-            softTabs: true,
-            tabSize: this._tabsize,
-            autoOpen: true,
-            autoStrip: true
-        });
+        $(".chatbox").on("keydown", this.onKeypress.bind(this));
 
-        $(".chatbox")
-        .on("keydown", this.onKeypress.bind(this));
+        Tab.tabSize(this._tabsize);
+        Tab.set(document.querySelector(".chatbox"));
 
-        this.$chat
-        .on("scroll", this.onScroll.bind(this))
-        .perfectScrollbar();
+        this.$chat.on("scroll", this.onScroll.bind(this));
 
         $(window).ready(this.hideSplashScreen.bind(this));
     }
 
+    r.initChatFlag = function(){
+        this._chatFlag = 0;
+    }
+
+    r.initSockets = function(){
+        var cfg = Config().get();
+        this.socket = new FumePush(cfg["url_origin"], 8000);
+
+        this.chatChannel = this.socket.subscribe(channel.chat.channelName);
+
+
+        this.setUserName(cfg["username"]);
+    }
+
     r.onScroll = function(){
         if(this.isScrollOnBottom()){
-            this.chatFlag &= ~chatState.SCROLLING;
+            this.removeFlag(flags.SCROLLING);
             return;
         }
-        this.chatFlag |= chatState.SCROLLING;
+        this.setFlag(flags.SCROLLING);
     }
 
     r.isScrollOnBottom = function(){
@@ -125,18 +122,6 @@ var Chat = (function(){
 
     r.getUserName = function(){
         return this._userName || "Smitty Werben Jagger Man Jensen";
-    }
-
-    r.initSockets = function(){
-        var cfg = Config().get();
-        this.socket = new FumePush(cfg["url_origin"], 8000);
-
-        this.chatChannel = this.socket.subscribe(channel.chat.channelName);
-        /*
-                this.userTypesChannel = this.socket.subscribe(eventName.typing.channel);
-                this.messageErrorChannel = this.socket.subscribe(eventName.messageError.channel);*/
-
-        this.setUserName(cfg["username"]);
     }
 
     r.addMessage = function(user, message, time, isHandy, id){
@@ -155,7 +140,6 @@ var Chat = (function(){
 
         this.$chat.append(box);
 
-        this.$chat.perfectScrollbar("update");
         this.scrollDown();
     }
 
@@ -183,6 +167,7 @@ var Chat = (function(){
 
         this.addMessage(userName, message, time, isHandy, id);
         DisplayTyping().end();
+        DisplayTyping().increaseMessageCounter().updateTitle();
     }
 
     r.userTypesChannelCallback = function(data){
@@ -234,14 +219,14 @@ var Chat = (function(){
         var time = this.getChatTime();
         var handy = this.isHandy();
 
-        if(!$.trim(text)) {
+        if(!$.trim(text)){
             this.empty();
             return;
         }
 
         text = Meme.convert(text);
 
-        this.addMessage(this.getUserName(), text, time, handy, id, this.isYoutubeLink);
+        this.addMessage(this.getUserName(), text, time, handy, id);
 
         this.convertYoutubeLinks();
         text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
@@ -257,9 +242,7 @@ var Chat = (function(){
             id: id
         });
 
-        text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
-
-        this.createDBEntry(text, handy);
+        //this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy, id){
@@ -280,10 +263,9 @@ var Chat = (function(){
     }
 
     r.parseLink = function(input){
-        var _this = this;
 
-        return Autolinker.link( input, {
-            replaceFn : function( autolinker, match ) {
+        return Autolinker.link(input, {
+            replaceFn: function(autolinker, match){
 
                 var url = match.getUrl();
 
@@ -296,14 +278,30 @@ var Chat = (function(){
 
                         // Youtube.
                         if(url.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)){
-                            _this.isYoutubeLink = true;
+                            this.setFlag(flags.YOUTUBE_LINK);
                             return "<a class='youtube-link' href='" + RegExp.$1 + "'><small></small><em></em></a>";
                         }
 
                         return true;
                 }
-            }
+            }.bind(this)
         });
+    }
+
+    r.setFlag = function(expr){
+        this._chatFlag |= expr;
+    }
+
+    r.removeFlag = function(expr){
+        this._chatFlag &= ~ expr;
+    }
+
+    r.toggleFlag = function(expr){
+        this._chatFlag ^= expr;
+    }
+
+    r.isFlag = function(expr){
+        return this._chatFlag & expr;
     }
 
     r.getChatTime = function(){
@@ -322,7 +320,14 @@ var Chat = (function(){
 
     r.setChatFocus = function(){
         $(window).focus(function(){
+            DisplayTyping().isWindowActive = true;
             $(".chatbox").focus();
+            DisplayTyping().resetMessageCounter().updateTitle();
+            console.log("active");
+        })
+        .blur(function(){
+            console.log("not active");
+            DisplayTyping().isWindowActive  = false;
         });
     }
 
@@ -338,34 +343,24 @@ var Chat = (function(){
     r.convertYoutubeLinks = function(){
         var youtubeBox;
 
-        if(this.isYoutubeLink) {
-            youtubeBox = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']");
+        if(!this.isFlag(flags.YOUTUBE_LINK)) return;
 
-            youtubeBox.find(".youtube-link").each(function(index, value){
-                $.ajax({
-                    url: "../public/getYoutubeTitle/" +  $(this).attr("href"),
-                    async: false
-                }).done(function(val){
-                    youtubeBox.find(".youtube-link:eq(" + index + ")").find("em").text(val);
-                });
+        youtubeBox = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']");
+
+        youtubeBox.find(".youtube-link").each(function(index, value){
+            $.ajax({
+                url: "../public/getYoutubeTitle/" + $(this).attr("href"),
+                async: false
+            }).done(function(val){
+                youtubeBox.find(".youtube-link:eq(" + index + ")").find("em").text(val);
             });
+        });
 
-            this.isYoutubeLink = null;
-        }
-    }
-
-    r.addTab = function(){
-        var chatText = $(".chatbox")
-        var text = chatText.val();
-
-        for(var i = 0; i < this._tabsize; i++) {
-            text += " ";
-        }
-        chatText.val(text)
+        this.removeFlag(flags.YOUTUBE_LINK);
     }
 
     r.getCurrentChatID = function(){
-        return +$(".box").last().attr("data-id") + 1;
+        return +$(".box:not(.typing)").last().attr("data-id") + 1;
     }
 
     r.empty = function(){
@@ -374,11 +369,10 @@ var Chat = (function(){
 
     r.scrollDown = function(force){
         force = force || false;
-        if(!force && (this.chatFlag & chatState.SCROLLING)){
+        if(!force && this.isFlag(flags.SCROLLING)){
             return;
         }
         this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
-        this.$chat.perfectScrollbar("update");
 
         if(!this.isScrollOnBottom()){
             this.scrollDown(true);

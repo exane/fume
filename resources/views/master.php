@@ -10,7 +10,8 @@
   <link href="<?php echo autoCache('assets/css/core.css'); ?>" rel="stylesheet">
   <link href="<?php echo autoCache('favicon.ico'); ?>" rel="icon" type="image/x-icon">
 
-  <!--[if lt IE 9]> <script src="<?php echo URL; ?>assets/js/html5shiv.js"></script> <![endif]-->
+    <!--we ain't gonna use IE or some legacy shit :D -->
+<!--  <!--[if lt IE 9]> <!--<script src="<?php /*echo URL; */?>assets/js/html5shiv.js"></script>--> <![endif]-->
 
 
 </head>
