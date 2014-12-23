@@ -1,4 +1,7 @@
-@import "scrollbar";
+@import "scrollbar";.chat-img {
+  max-width: 250px;
+}
+
 
 .chat-wrap {
   position: absolute;
@@ -96,6 +99,24 @@
   }
 }
 
+.youtube-link {
+  font-size: 12px;
+  text-decoration: none;
+
+  img {
+    @extend .sprite-youtube;
+    display: inline-block;
+    margin: 0 3px 0 2px;
+  }
+
+  .box-me & {
+    color: #d7f0ae;
+  }
+
+  .box-partner & {
+    color: #868686;
+  }
+}
 .splashscreen {
   height: 100%;
   width: 100%;

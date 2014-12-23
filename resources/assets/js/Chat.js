@@ -81,6 +81,7 @@ var Chat = (function(){
     r.init = function(){
         this.setUrl(Config().get().url);
         this.setChatFocus();
+        this.handleYoutubeLinks();
         this.$chat = $(".chats");
 
         this.editor = new TabLibrary({
@@ -279,9 +280,16 @@ var Chat = (function(){
                 var url = match.getUrl();
 
                 switch(match.getType()) {
-                    case 'url' :
-                        if(url.match(/\.(jpeg|jpg|gif|png)$/) != null) {
+                    case 'url':
+                        // Image.
+                        if(url.match(/\.(jpeg|jpg|gif|png)$/)){
                             return "<a href='" + url + "' target='_blank'><img class='chat-img' src='" + url + "'></a>";
+                        }
+
+                        // Youtube.
+                        if(url.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)){
+                            return "<a class='youtube-link' href='" + RegExp.$1 + "'><img>" + RegExp.$1 + "</a>";
+                            //return RegExp.$1;
                         }
 
                         return true;
@@ -307,6 +315,15 @@ var Chat = (function(){
     r.setChatFocus = function(){
         $(window).focus(function(){
             $(".chatbox").focus();
+        });
+    }
+
+    r.handleYoutubeLinks = function(){
+        $(document).on("click", ".youtube-link", function(){
+            var id = $(this).attr("href");
+            $(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
+
+            return false;
         });
     }
 

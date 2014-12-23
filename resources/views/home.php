@@ -15,7 +15,7 @@
 </aside>
 
 <section class="site-content">
-  bla
+  <div class="youtube-wrap"></div>
 </section>
 
 <aside class="site-tools">
