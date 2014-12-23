@@ -275,7 +275,7 @@ var Chat = (function(){
                     case 'url':
                         // Image.
                         if(url.match(/\.(jpeg|jpg|gif|png)$/)){
-                            return "<a href='" + url + "' target='_blank'><img src='" + url + "'></a>";
+                            return "<a href='" + url + "' target='_blank'><img class='chat-img' src='" + url + "'></a>";
                         }
 
                         // Youtube.
