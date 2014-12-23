@@ -61,8 +61,7 @@ var DisplayTyping = (function(){
     }
 
     r.increaseMessageCounter = function(){
-        if(this.isWindowActive) return this;
-        this._messageCounter++;
+        if(!this.isWindowActive) this._messageCounter++;
         return this;
     }
 
