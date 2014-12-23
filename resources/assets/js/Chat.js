@@ -9,7 +9,8 @@ var Tab = require("./taboverride.js");
 var keyCode = {
     "enter": 13,
     "shift": 16,
-    "tab": 9
+    "tab": 9,
+    "f5": 116
 }
 
 var channel = {
@@ -189,6 +190,7 @@ var Chat = (function(){
             e.preventDefault();
             this.addTab();
         }*/
+        if(e.which === keyCode["f5"]) return; //to prevent user calls "typing" when he only refresh his page
 
         //to prevent overhead it fires only every 3 seconds an "typing" event
         if((this._typingTimeFlag + 3000) < Date.now()){
@@ -242,7 +244,7 @@ var Chat = (function(){
             id: id
         });
 
-        //this.createDBEntry(text, handy);
+        this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy, id){
@@ -320,13 +322,11 @@ var Chat = (function(){
 
     r.setChatFocus = function(){
         $(window).focus(function(){
-            DisplayTyping().isWindowActive = true;
             $(".chatbox").focus();
+            DisplayTyping().isWindowActive = true;
             DisplayTyping().resetMessageCounter().updateTitle();
-            console.log("active");
         })
         .blur(function(){
-            console.log("not active");
             DisplayTyping().isWindowActive  = false;
         });
     }
