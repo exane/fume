@@ -1,5 +1,5 @@
 var Sound = require("./Sound.js");
-var command = require("./command_data.js");
+var commands = require("./command_data.js");
 
 
 var Command = (function(){

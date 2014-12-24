@@ -1,4 +1,4 @@
-var commands = {
+module.exports = {
     "help": function(parent, _indentRow){
         var res = "";
         _indentRow = _indentRow || 1;
@@ -30,3 +30,4 @@ var commands = {
         "test2": function(){}
     }
 }
+
