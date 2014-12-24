@@ -1,6 +1,8 @@
+// "chatcommand": "image-name"
+
 module.exports = {
-    "kogoroGekonnt": "kogoroGekonnt.png",
-    "oi!": "oi!.png",
-    "yo!": "yo.png",
-    "PogChamp": "PogChamp.png"
+    "kogoroGekonnt": "kogoroGekonnt",
+    "oi!": "oi",
+    "yo!": "yo",
+    "PogChamp": "PogChamp"
 }

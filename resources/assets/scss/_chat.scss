@@ -1,4 +1,6 @@
-@import "scrollbar";.chat-img {
+@import "scrollbar";
+
+.chat-img {
   max-width: 250px;
 }
 
@@ -155,16 +157,12 @@
     left: 30px;
   }
 }
-/*
-.chat-img {
-  max-width: 250px;
-}*/
+
 
 //memes
-.meme-img {
-  position: relative;
-  top: 10px;
+.meme {
   display: inline-block;
+  margin-bottom: -5px;
 
   //border: 1px solid red;
 }

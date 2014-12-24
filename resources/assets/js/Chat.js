@@ -5,6 +5,8 @@ var DisplayTyping = require("./Display.js");
 var Autolinker = require("autolinker");
 var Meme = require("./Meme.js");
 var Tab = require("./taboverride.js");
+var Cmd = require("./Command.js");
+var Sound = require("./Sound.js");
 
 var keyCode = {
     "enter": 13,
@@ -169,6 +171,7 @@ var Chat = (function(){
         this.addMessage(userName, message, time, isHandy, id);
         DisplayTyping().end();
         DisplayTyping().increaseMessageCounter().updateTitle();
+        Sound().play();
     }
 
     r.userTypesChannelCallback = function(data){
@@ -220,9 +223,16 @@ var Chat = (function(){
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
         var handy = this.isHandy();
+        var res;
 
         if(!$.trim(text)){
             this.empty();
+            return;
+        }
+
+        if(res = Cmd.compile(text)){
+            this.empty();
+            this.addMessage("cmd", res, time, false, id);
             return;
         }
 

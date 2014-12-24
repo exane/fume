@@ -21,7 +21,6 @@
       require session('vume_view')->get();
     ?>
 
-<!--    <script src="<?php /*echo URL; */?>assets/js/FumePushClient.min.js"></script>-->
     <script src="<?php echo URL; ?>assets/js/build/build.js"></script>
 </body>
 </html>
