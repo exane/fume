@@ -1,3 +1,5 @@
+var Sound = require("./Sound.js");
+
 module.exports = {
     "help": function(parent, _indentRow){
         var res = "";
