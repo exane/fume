@@ -38,7 +38,7 @@ var Sound = (function(){
     }
 
     r.getTrack = function(){
-        return this.url + $.cookie("fume_sound_track") || this.url + "sound1.wav";
+        return this.url + ($.cookie("fume_sound_track") ||  "sound1.wav");
     }
 
 
