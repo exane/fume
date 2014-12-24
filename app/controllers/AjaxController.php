@@ -4,7 +4,7 @@
 
     public function getConfig()
     {
-      $ini = parse_ini_file('../config/config.ini');
+      $ini = parse_ini_file(config_path . 'config.ini');
       $res = [];
 
       foreach($ini as $key => $val) {
@@ -21,8 +21,8 @@
      */
     public function getYoutubeTitle($id)
     {
-      $videoTitle = file_get_contents("http://gdata.youtube.com/feeds/api/videos/" . $id . "?v=2&fields=title");
-      preg_match("/<title>(.+?)<\/title>/is", $videoTitle, $titleOfVideo);
+      $videoTitle = file_get_contents('http://gdata.youtube.com/feeds/api/videos/' . $id . '?v=2&fields=title');
+      preg_match('/<title>(.+?)<\/title>/is', $videoTitle, $titleOfVideo);
 
       echo $titleOfVideo[1];
     }
