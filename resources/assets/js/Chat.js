@@ -164,6 +164,7 @@ var Chat = (function(){
     }
 
     r.sendMessage = function(){
+        var rowText = $(".chatbox").val();
         var text = this.parseLink($(".chatbox").val());
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
@@ -199,7 +200,7 @@ var Chat = (function(){
             id: id
         });
 
-        this.createDBEntry(text, handy);
+        this.createDBEntry(rowText, handy);
     }
 
     r.bindChannel = function(){

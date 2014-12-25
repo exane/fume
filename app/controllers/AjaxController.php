@@ -21,9 +21,6 @@
      */
     public function getYoutubeTitle($id)
     {
-      $videoTitle = file_get_contents('http://gdata.youtube.com/feeds/api/videos/' . $id . '?v=2&fields=title');
-      preg_match('/<title>(.+?)<\/title>/is', $videoTitle, $titleOfVideo);
-
-      echo $titleOfVideo[1];
+      echo getYoutubeTitle($id);
     }
   }
