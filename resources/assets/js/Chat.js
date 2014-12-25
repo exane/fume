@@ -43,8 +43,8 @@ var Chat = (function(){
         $.when(Config().load())
         .then(this.init.bind(this))
         .then(this.initSockets.bind(this))
-        .then(this.bindChannel.bind(this))
-        .then(this.scrollDown.bind(this, true));
+        .then(this.bindChannel.bind(this));
+        //.then($(window).load(this.scrollDown.bind(this, true)));
     }
     var r = Chat.prototype;
 
@@ -87,7 +87,10 @@ var Chat = (function(){
 
         this.$chat.on("scroll", this.onScroll.bind(this));
 
-        $(window).ready(this.hideSplashScreen.bind(this));
+        $(window).load(function(){
+            this.hideSplashScreen();
+            this.scrollDown(true);
+        }.bind(this));
     }
 
     r.initChatFlag = function(){
@@ -384,7 +387,8 @@ var Chat = (function(){
         this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
 
         if(!this.isScrollOnBottom()){
-            this.scrollDown(true);
+            //this.scrollDown(true);
+            setTimeout(this.scrollDown.bind(this, true), 1);
         }
     }
 
