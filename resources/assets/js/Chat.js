@@ -387,8 +387,8 @@ var Chat = (function(){
         this.$chat.scrollTop(this.$chat.prop("scrollHeight"));
 
         if(!this.isScrollOnBottom()){
-            //this.scrollDown(true);
-            setTimeout(this.scrollDown.bind(this, true), 1);
+            this.scrollDown(true);
+            //setTimeout(this.scrollDown.bind(this, true), 1);
         }
     }
 
