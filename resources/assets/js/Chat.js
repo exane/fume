@@ -44,7 +44,7 @@ var Chat = (function(){
         .then(this.init.bind(this))
         .then(this.initSockets.bind(this))
         .then(this.bindChannel.bind(this))
-        .then(this.scrollDown.bind(this));
+        .then(this.scrollDown.bind(this, true));
     }
     var r = Chat.prototype;
 
@@ -57,7 +57,6 @@ var Chat = (function(){
     r._tabsize = 4;
     r._typingTimeFlag = 0;
     r._chatFlag = null;
-
 
 
     r.socket = null;
@@ -113,10 +112,25 @@ var Chat = (function(){
         this.setFlag(flags.SCROLLING);
     }
 
-    r.isScrollOnBottom = function(){
-        var padding = parseInt(this.$chat.css("padding-top"));
-        var isDown = this.$chat.prop("scrollHeight") - this.$chat.height() - padding === this.$chat.scrollTop();
-        return isDown;
+    r.onKeypress = function(e){
+        /*if(e.which == keyCode.tab){
+            e.preventDefault();
+            this.addTab();
+        }*/
+        if(e.which === keyCode["f5"]) return; //to prevent user calls "typing" when he only refresh his page
+
+        //to prevent overhead it fires only every 3 seconds an "typing" event
+        if((this._typingTimeFlag + 3000) < Date.now()){
+            this._typingTimeFlag = Date.now();
+
+            this.chatChannel.trigger(channel.chat.event.typing, {
+                user: this.getUserName()
+            })
+        }
+
+        if(e.which != keyCode.enter || e.shiftKey) return;
+        this.sendMessage();
+        return false;
     }
 
     r.setUserName = function(name){
@@ -144,6 +158,45 @@ var Chat = (function(){
         this.$chat.append(box);
 
         this.scrollDown();
+    }
+
+    r.sendMessage = function(){
+        var text = this.parseLink($(".chatbox").val());
+        var id = this.getCurrentChatID();
+        var time = this.getChatTime();
+        var handy = this.isHandy();
+        var res;
+
+        if(!$.trim(text)){
+            this.empty();
+            return;
+        }
+
+        if(res = Cmd.compile(text)){
+            this.empty();
+            this.addMessage("cmd", res, time, "cmd");
+            return;
+        }
+
+        text = Meme.convert(text);
+
+        this.addMessage(this.getUserName(), text, time, handy, id);
+
+        this.convertYoutubeLinks();
+        text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
+
+        this.empty();
+        this._typingTimeFlag = 0;
+
+        this.chatChannel.trigger(channel.chat.event.message, {
+            user: this.getUserName(),
+            handy: handy,
+            message: text,
+            time: time,
+            id: id
+        });
+
+        this.createDBEntry(text, handy);
     }
 
     r.bindChannel = function(){
@@ -188,27 +241,6 @@ var Chat = (function(){
         $(".box[data-id='" + data.id + "']").find("span").prepend("<b></b>");
     }
 
-    r.onKeypress = function(e){
-        /*if(e.which == keyCode.tab){
-            e.preventDefault();
-            this.addTab();
-        }*/
-        if(e.which === keyCode["f5"]) return; //to prevent user calls "typing" when he only refresh his page
-
-        //to prevent overhead it fires only every 3 seconds an "typing" event
-        if((this._typingTimeFlag + 3000) < Date.now()){
-            this._typingTimeFlag = Date.now();
-
-            this.chatChannel.trigger(channel.chat.event.typing, {
-                user: this.getUserName()
-            })
-        }
-
-        if(e.which != keyCode.enter || e.shiftKey) return;
-        this.sendMessage();
-        return false;
-    }
-
     r.isJson = function(str){
         try {
             JSON.parse(str);
@@ -216,45 +248,6 @@ var Chat = (function(){
             return false;
         }
         return true;
-    }
-
-    r.sendMessage = function(){
-        var text = this.parseLink($(".chatbox").val());
-        var id = this.getCurrentChatID();
-        var time = this.getChatTime();
-        var handy = this.isHandy();
-        var res;
-
-        if(!$.trim(text)){
-            this.empty();
-            return;
-        }
-
-        if(res = Cmd.compile(text)){
-            this.empty();
-            this.addMessage("cmd", res, time, false, id);
-            return;
-        }
-
-        text = Meme.convert(text);
-
-        this.addMessage(this.getUserName(), text, time, handy, id);
-
-        this.convertYoutubeLinks();
-        text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
-
-        this.empty();
-        this._typingTimeFlag = 0;
-
-        this.chatChannel.trigger(channel.chat.event.message, {
-            user: this.getUserName(),
-            handy: handy,
-            message: text,
-            time: time,
-            id: id
-        });
-
-        this.createDBEntry(text, handy);
     }
 
     r.createDBEntry = function(text, handy, id){
@@ -305,7 +298,7 @@ var Chat = (function(){
     }
 
     r.removeFlag = function(expr){
-        this._chatFlag &= ~ expr;
+        this._chatFlag &= ~expr;
     }
 
     r.toggleFlag = function(expr){
@@ -337,7 +330,7 @@ var Chat = (function(){
             DisplayTyping().resetMessageCounter().updateTitle();
         })
         .blur(function(){
-            DisplayTyping().isWindowActive  = false;
+            DisplayTyping().isWindowActive = false;
         });
     }
 
@@ -370,11 +363,17 @@ var Chat = (function(){
     }
 
     r.getCurrentChatID = function(){
-        return +$(".box:not(.typing)").last().attr("data-id") + 1;
+        return +$(".box:not([data-id='cmd'])").last().attr("data-id") + 1;
     }
 
     r.empty = function(){
         $(".chatbox").val("");
+    }
+
+    r.isScrollOnBottom = function(){
+        var padding = parseInt(this.$chat.css("padding-top"));
+        var isDown = (this.$chat.prop("scrollHeight") - this.$chat.height() - padding) <= this.$chat.scrollTop();
+        return isDown;
     }
 
     r.scrollDown = function(force){

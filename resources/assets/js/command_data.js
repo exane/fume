@@ -6,12 +6,12 @@ module.exports = {
         _indentRow = _indentRow || 1;
         for(var cmd in parent) {
             if(cmd === "help") continue;
-            for(var i=0; i<_indentRow; i++){
+            for(var i = 0; i < _indentRow; i++) {
                 res += "\t";
             }
             res += cmd + "\n";
             if(typeof parent[cmd] == "object"){
-                res += this["help"](parent[cmd], _indentRow+1);
+                res += this["help"](parent[cmd], _indentRow + 1);
             }
         }
         return res;
@@ -26,10 +26,6 @@ module.exports = {
             var sound = Sound();
             sound.setTrack(url);
         }
-    },
-    "chat": {
-        "test": function(){},
-        "test2": function(){}
     }
 }
 
