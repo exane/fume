@@ -209,7 +209,7 @@ var Chat = (function(){
             id: id
         });
 
-        //this.createDBEntry(raw, handy);
+        this.createDBEntry(raw, handy);
     }
 
     r.bindChannel = function(){
