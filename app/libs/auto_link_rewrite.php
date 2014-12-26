@@ -48,16 +48,24 @@
     //}
 
     // Image.
-    if(preg_match('/\.(jpeg|jpg|gif|png)$/', $url_full)) {
+    if( ! isMobile() && preg_match('/\.(jpeg|jpg|gif|png)$/', $url_full)) {
       return "<a href=$url_full target='_blank'><img class='chat-img' src=$url_full></a>";
     }
 
     // Youtube.
-    if(preg_match('/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/', $url_full, $matches)) {
+    if( ! isMobile() && preg_match('/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/', $url_full, $matches)) {
       $id = $matches[1];
       $title = getYoutubeTitle($id);
       return "<a class='youtube-link' href=$id><small></small><em>$title</em></a>";
     }
 
     return "<a href='" . $url_full . "' target='_blank'>" . $url_short . "</a>";
+  }
+
+  /**
+   * Detect if user is on mobile.
+   */
+  function isMobile()
+  {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
   }
