@@ -149,7 +149,9 @@ var Chat = (function(){
     }
 
     r.addMessage = function(user, message, time, isHandy, id){
-        var box = $("<div data-id='" + id + "' class='box'><p></p><span></span></div>")
+        var box = $("<div data-id='"  + id + "' class='box'><p></p><span></span></div>")
+        message = this.parseLink(message);
+        message = Meme.convert(message);
 
         if(user === this.getUserName())
             box.addClass("box-me");
@@ -164,6 +166,8 @@ var Chat = (function(){
 
         this.$chat.append(box);
 
+        this.convertYoutubeLinks();
+
         box.find("img").on("load", function(){
             this.scrollDown()
         }.bind(this));
@@ -173,30 +177,23 @@ var Chat = (function(){
 
     r.sendMessage = function(){
         var raw = $(".chatbox").val();
-        var text = this.parseLink(raw);
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
         var handy = this.isHandy();
         var res;
 
-        if(!$.trim(text)){
+        if(!$.trim(raw)){
             this.empty();
             return;
         }
 
-        if(res = Cmd.compile(text)){
+        if(res = Cmd.compile(raw)){
             this.empty();
             this.addMessage("cmd", res, time, false, "cmd");
             return;
         }
 
-        text = Meme.convert(text);
-        raw = Meme.convert(raw);
-
-        this.addMessage(this.getUserName(), text, time, handy, id);
-
-        this.convertYoutubeLinks();
-        text = $(".box[data-id='" + (this.getCurrentChatID() - 1) + "']").find("p").html();
+        this.addMessage(this.getUserName(), raw, time, handy, id);
 
         this.empty();
         this._typingTimeFlag = 0;
@@ -204,13 +201,14 @@ var Chat = (function(){
         this.chatChannel.trigger(channel.chat.event.message, {
             user: this.getUserName(),
             handy: handy,
-            message: text,
+            message: raw,
             time: time,
             id: id
         });
 
         this.createDBEntry(raw, handy);
     }
+
 
     r.bindChannel = function(){
         this.chatChannel.bind(channel.chat.event.message, this.chatChannelCallback.bind(this));
