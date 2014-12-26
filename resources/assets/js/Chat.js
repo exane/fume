@@ -149,7 +149,7 @@ var Chat = (function(){
     }
 
     r.addMessage = function(user, message, time, isHandy, id){
-        var box = $("<div data-id='"  + id + "' class='box'><p></p><span></span></div>")
+        var box = $("<div data-id='" + id + "' class='box'><p></p><span></span></div>")
         message = this.parseLink(message);
         message = Meme.convert(message);
 

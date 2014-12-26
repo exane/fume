@@ -6,16 +6,16 @@
   }
 
   function auto_link_text_callback($matches) {
-    $max_url_length = 50;
+    $max_url_length = 40;
     $max_depth_if_over_length = 2;
     $ellipsis = '&hellip;';
 
     $url_full = $matches[0];
     $url_short = '';
 
-    if (strlen($url_full) > $max_url_length) {
+    //if (strlen($url_full) > $max_url_length) {
       $parts = parse_url($url_full);
-      $url_short = $parts['scheme'] . '://' . preg_replace('/^www\./', '', $parts['host']) . '/';
+      $url_short = /*$parts['scheme'] . '://' .*/ preg_replace('/^www\./', '', $parts['host']) . '/';
 
       $path_components = explode('/', trim($parts['path'], '/'));
       foreach ($path_components as $dir) {
@@ -43,9 +43,9 @@
         $url_short .= $curr_component;
       }
 
-    } else {
-      $url_short = $url_full;
-    }
+    //} else {
+      //$url_short = $url_full;
+    //}
 
     // Image.
     if(preg_match('/\.(jpeg|jpg|gif|png)$/', $url_full)) {
@@ -59,5 +59,5 @@
       return "<a class='youtube-link' href=$id><small></small><em>$title</em></a>";
     }
 
-    return "<a href='" . $url_full . "' target='_blank'>" . $url_full . "</a>";
+    return "<a href='" . $url_full . "' target='_blank'>" . $url_short . "</a>";
   }
