@@ -1,4 +1,4 @@
-var Sound = require("./Sound.js");
+
 var commands = require("./command_data.js");
 
 
@@ -7,7 +7,7 @@ var Command = (function(){
     var r = Command;
 
     r.compile = function(text){
-        var regex = /!(\S+)\s+(\S+)\s*(\S*)/g;
+        var regex = /!(\S\w+)\s+(\S\w+)\s*(\S\w*)?/g;
         var arr = [];
         var cmd, prop, val;
         var res;
@@ -20,6 +20,8 @@ var Command = (function(){
         if(!arr) return false;
 
         cmd = arr[1];
+        if(typeof commands[cmd] === "undefined") return false;
+
         prop = arr[2];
         val = arr[3];
 

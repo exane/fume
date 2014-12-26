@@ -91,6 +91,10 @@ var Chat = (function(){
             this.hideSplashScreen();
             this.scrollDown(true);
         }.bind(this));
+        $(window).ready(function(){ //crap -.-
+            this.hideSplashScreen();
+            this.scrollDown(true);
+        }.bind(this));
     }
 
     r.initChatFlag = function(){
@@ -160,12 +164,16 @@ var Chat = (function(){
 
         this.$chat.append(box);
 
+        box.find("img").on("load", function(){
+            this.scrollDown()
+        }.bind(this));
+
         this.scrollDown();
     }
 
     r.sendMessage = function(){
-        var rowText = $(".chatbox").val();
-        var text = this.parseLink($(".chatbox").val());
+        var raw = $(".chatbox").val();
+        var text = this.parseLink(raw);
         var id = this.getCurrentChatID();
         var time = this.getChatTime();
         var handy = this.isHandy();
@@ -178,11 +186,12 @@ var Chat = (function(){
 
         if(res = Cmd.compile(text)){
             this.empty();
-            this.addMessage("cmd", res, time, "cmd");
+            this.addMessage("cmd", res, time, false, "cmd");
             return;
         }
 
         text = Meme.convert(text);
+        raw = Meme.convert(raw);
 
         this.addMessage(this.getUserName(), text, time, handy, id);
 
@@ -200,7 +209,7 @@ var Chat = (function(){
             id: id
         });
 
-        this.createDBEntry(rowText, handy);
+        //this.createDBEntry(raw, handy);
     }
 
     r.bindChannel = function(){
@@ -274,7 +283,12 @@ var Chat = (function(){
     r.parseLink = function(input){
 
         return Autolinker.link(input, {
+            truncate: 40,
             replaceFn: function(autolinker, match){
+
+                if(this.isHandy()){
+                    return true;
+                }
 
                 var url = match.getUrl();
 
@@ -367,7 +381,7 @@ var Chat = (function(){
     }
 
     r.getCurrentChatID = function(){
-        return +$(".box:not([data-id='cmd'])").last().attr("data-id") + 1;
+        return +$(".box:not([data-id='cmd']):not(.typing)").last().attr("data-id") + 1;
     }
 
     r.empty = function(){
@@ -389,7 +403,6 @@ var Chat = (function(){
 
         if(!this.isScrollOnBottom()){
             this.scrollDown(true);
-            //setTimeout(this.scrollDown.bind(this, true), 1);
         }
     }
 
