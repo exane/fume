@@ -287,15 +287,16 @@ var Chat = (function(){
         return Autolinker.link(input, {
             truncate: 40,
             replaceFn: function(autolinker, match){
+                var url;
 
                 if(this.isHandy()){
                     return true;
                 }
 
-                var url = match.getUrl();
-
                 switch(match.getType()) {
-                    case 'url':
+
+                  case 'url':
+                        url = match.getUrl();
                         // Image.
                         if(url.match(/\.(jpeg|jpg|gif|png)$/)){
                             return "<a href='" + url + "' target='_blank'><img class='chat-img' src='" + url + "'></a>";
@@ -308,6 +309,9 @@ var Chat = (function(){
                         }
 
                         return true;
+
+                  case 'twitter':
+                      return false;
                 }
             }.bind(this)
         });
