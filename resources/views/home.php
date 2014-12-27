@@ -27,7 +27,7 @@
     <div class="chats">
       <?php foreach($messages as $message): ?>
         <div data-id="<?php echo $message->id; ?>" class="box <?php echo $message->benutzer == $username ? 'box-me' : 'box-partner'; ?>">
-          <p><?php echo autolink($message->inhalt); ?></p>
+          <p><?php echo $message->inhalt; ?></p>
           <span>
             <?php
               echo date('H:i', $message->zeit);

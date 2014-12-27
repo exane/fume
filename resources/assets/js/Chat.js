@@ -285,36 +285,41 @@ var Chat = (function(){
         });
     }
 
-    r.parseLink = function(input){
+  r.parseLink = function(input) {
 
-        return Autolinker.link(input, {
-            truncate: 40,
-            replaceFn: function(autolinker, match){
+    return Autolinker.link(input, {
+      truncate: 40,
+      replaceFn: function(autolinker, match) {
+        var url;
 
-                if(this.isHandy()){
-                    return true;
-                }
+        if(this.isHandy()) {
+            return true;
+        }
 
-                var url = match.getUrl();
+        switch(match.getType()) {
 
-                switch(match.getType()) {
-                    case 'url':
-                        // Image.
-                        if(url.match(/\.(jpeg|jpg|gif|png)$/)){
-                            return "<a href='" + url + "' target='_blank'><img class='chat-img' src='" + url + "'></a>";
-                        }
+          case 'url':
+            url = match.getUrl();
 
-                        // Youtube.
-                        if(url.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)){
-                            this.setFlag(flags.YOUTUBE_LINK);
-                            return "<a class='youtube-link' href='" + RegExp.$1 + "'><small></small><em></em></a>";
-                        }
+            // Image.
+            if(url.match(/\.(jpeg|jpg|gif|png)$/)) {
+              return "<a href='" + url + "' target='_blank'><img class='chat-img' src='" + url + "'></a>";
+            }
 
-                        return true;
-                }
-            }.bind(this)
-        });
-    }
+            // Youtube.
+            if(url.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/)) {
+              this.setFlag(flags.YOUTUBE_LINK);
+              return "<a class='youtube-link' href='" + RegExp.$1 + "'><small></small><em></em></a>";
+            }
+
+            return true;
+
+          case 'twitter':
+            return false;
+        }
+      }.bind(this)
+    });
+  }
 
     r.setFlag = function(expr){
         this._chatFlag |= expr;
