@@ -13,10 +13,11 @@ pusherClientChannel = pusherClient.subscribe("nachrichten");
 var fumePush = new FumePush(8000);
 
 fumePush.bind("send", function(data){
+    if(typeof data.data._legacy === "undefined") return;
     console.log("event called on server! room: " + data.room + " event: " + data.event + " data: ", data.data);
     pusher.trigger("nachrichten", "nachrichten senden", {
-        "nachricht": data.data.message,
         "benutzer": data.data.user,
+        "nachricht": data.data.message,
         "zeit": data.data.time,
         "handy": data.data.handy
     });
@@ -27,7 +28,8 @@ fumePush.bind("typing", function(data){
 })
 
 pusherClientChannel.bind("nachrichten senden", function(data){
-    console.log(data);
+    if(!data.handy) return;
+    console.log("trigger: pusher", data);
     fumePush.trigger("send", {
         user: data.benutzer,
         message: data.nachricht,
