@@ -7,6 +7,7 @@ var Meme = require("./Meme.js");
 var Tab = require("./taboverride.js");
 var Cmd = require("./Command.js");
 var Sound = require("./Sound.js");
+var imagesloaded = require("imagesloaded");
 
 var keyCode = {
     "enter": 13,
@@ -86,8 +87,9 @@ var Chat = (function(){
 
         this.$chat.on("scroll", this.onScroll.bind(this));
 
-        $(window).load(this.onLoad.bind(this));
-        $(window).ready(this.onLoad.bind(this));
+        this.onStart();
+        /*$(window).load(this.onLoad.bind(this));
+        $(window).ready(this.onLoad.bind(this));*/
     }
 
     r.initChatFlag = function(){
@@ -106,13 +108,12 @@ var Chat = (function(){
 
     r.onStart = function(){
         var chat = document.querySelector(".chats");
-        //chat.innerHTML = Autolinker.link(chat.innerHTML);
         chat.innerHTML = this.parseLink(chat.innerHTML);
         this.convertAllYoutubeLinks();
+        imagesloaded(document.querySelectorAll(".chats"), this.onLoad.bind(this));
     }
 
     r.onLoad = function(){
-        this.onStart();
         this.hideSplashScreen();
         this.scrollDown(true);
     }
@@ -360,9 +361,10 @@ var Chat = (function(){
         $(document).on("click", ".youtube-link", function(e){
             var id = $(this).attr("href");
 
-            if(e.metaKey) {
+            if(e.metaKey){
                 window.open("//www.youtube.com/watch?v=" + id);
-            } else {
+            }
+            else {
                 $(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
             }
 
@@ -396,7 +398,7 @@ var Chat = (function(){
 
         youtubeBox.find(".youtube-link").each(function(index, value){
             $.ajax({
-                url: "../public/getYoutubeTitle/"+ $(this).attr("href") + "/" + index
+                url: "../public/getYoutubeTitle/" + $(this).attr("href") + "/" + index
             }).done(function(val){
                 val = JSON.parse(val);
                 $(this).find("em").text(val.title);
