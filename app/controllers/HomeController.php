@@ -15,6 +15,7 @@
 
         $rndGreetings = ['Howdy', 'Hey', 'Was geht,', 'Yolo'];
         $messages = $chat->getMessages();
+        $messages = $chat->displayMeme($messages);
         $username = session('username')->get();
 
         return $this->view('home')

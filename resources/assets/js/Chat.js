@@ -44,7 +44,6 @@ var Chat = (function(){
         .then(this.init.bind(this))
         .then(this.initSockets.bind(this))
         .then(this.bindChannel.bind(this));
-        //.then($(window).load(this.scrollDown.bind(this, true)));
     }
     var r = Chat.prototype;
 
@@ -87,14 +86,8 @@ var Chat = (function(){
 
         this.$chat.on("scroll", this.onScroll.bind(this));
 
-        $(window).load(function(){
-            this.hideSplashScreen();
-            this.scrollDown(true);
-        }.bind(this));
-        $(window).ready(function(){ //crap -.-
-            this.hideSplashScreen();
-            this.scrollDown(true);
-        }.bind(this));
+        $(window).load(this.onLoad.bind(this));
+        $(window).ready(this.onLoad.bind(this));
     }
 
     r.initChatFlag = function(){
@@ -109,6 +102,16 @@ var Chat = (function(){
 
 
         this.setUserName(cfg["username"]);
+    }
+
+    r.onStart = function(){
+
+    }
+
+    r.onLoad = function(){
+        this.onStart();
+        this.hideSplashScreen();
+        this.scrollDown(true);
     }
 
     r.onScroll = function(){
@@ -151,7 +154,7 @@ var Chat = (function(){
     r.addMessage = function(user, message, time, isHandy, id){
         var box = $("<div data-id='" + id + "' class='box'><p></p><span></span></div>")
         message = this.parseLink(message);
-        message = Meme.convert(message);
+        message = Meme.display(message);
 
         if(user === this.getUserName())
             box.addClass("box-me");
@@ -193,6 +196,7 @@ var Chat = (function(){
             return;
         }
 
+        raw = Meme.compile(raw);
         this.addMessage(this.getUserName(), raw, time, handy, id);
 
         this.empty();

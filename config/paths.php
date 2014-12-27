@@ -9,5 +9,6 @@
     'lib_path' => __DIR__ . '/../lib/',
     'config_path' => __DIR__ . '/',
     'libs_path' => __DIR__ . '/../app/libs/',
+    'memes_path' => __DIR__ . '/../resources/assets/data/',
 
   ];

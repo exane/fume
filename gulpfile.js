@@ -8,7 +8,7 @@ var fs = require("fs");
 
 gulp.task("setup config", function(){
     fs.exists(__dirname + "/config/config.ini", function(exists){
-        if(exists) {
+        if(exists){
             //console.log("Config.ini already exists.");
             return;
         }
@@ -25,7 +25,7 @@ gulp.task("setup config", function(){
 })
 
 gulp.task('browserify', function(){
-    browserify('./resources/assets/js/main.js', {standalone: "fume"})
+    browserify('./resources/assets/js/main.js', {standalone: "fume", transform: "brfs"})
     .bundle().on("error", function(err){
         console.log(err);
     })
@@ -41,7 +41,7 @@ gulp.task('sass', function(){
     gulp.src('./resources/assets/scss/*.scss')
     .pipe(sass({
         outputStyle: 'compressed'
-      }).on("error", function(err){
+    }).on("error", function(err){
         console.log(err);
     }))
     .pipe(gulp.dest('./public/assets/css/').on("error", function(err){
@@ -52,36 +52,36 @@ gulp.task('sass', function(){
     }));
 });
 
-gulp.task('sprite', function () {
-  var spriteData = gulp.src('./resources/assets/img/*.png').pipe(spritesmith({
-    imgName: 'sprite.png',
-    cssName: '_sprites.scss',
-    imgPath: "../img/sprite.png",
-    cssFormat: "css",
-    cssOpts: {
-      cssClass: function (item) {
-        return '.sprite-' + item.name;
-      }
-    }
-  }));
-  spriteData.img.pipe(gulp.dest('public/assets/img/'));
-  spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
+gulp.task('sprite', function(){
+    var spriteData = gulp.src('./resources/assets/img/*.png').pipe(spritesmith({
+        imgName: 'sprite.png',
+        cssName: '_sprites.scss',
+        imgPath: "../img/sprite.png",
+        cssFormat: "css",
+        cssOpts: {
+            cssClass: function(item){
+                return '.sprite-' + item.name;
+            }
+        }
+    }));
+    spriteData.img.pipe(gulp.dest('public/assets/img/'));
+    spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
 });
 
-gulp.task('sprite memes', function () {
-  var spriteData = gulp.src('./resources/assets/img/meme/*.png').pipe(spritesmith({
-    imgName: 'meme.png',
-    cssName: '_memes.scss',
-    imgPath: "../img/meme.png",
-    cssFormat: "css",
-    cssOpts: {
-      cssClass: function (item) {
-        return '.meme-' + item.name;
-      }
-    }
-  }));
-  spriteData.img.pipe(gulp.dest('public/assets/img/'));
-  spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
+gulp.task('sprite memes', function(){
+    var spriteData = gulp.src('./resources/assets/img/meme/*.png').pipe(spritesmith({
+        imgName: 'meme.png',
+        cssName: '_memes.scss',
+        imgPath: "../img/meme.png",
+        cssFormat: "css",
+        cssOpts: {
+            cssClass: function(item){
+                return '.meme-' + item.name;
+            }
+        }
+    }));
+    spriteData.img.pipe(gulp.dest('public/assets/img/'));
+    spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
 });
 
 gulp.task("copyStaticImages", function(){
