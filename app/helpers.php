@@ -5,7 +5,7 @@
    */
   function autolink($text)
   {
-    return auto_link_text($text);
+    return $text; //auto_link_text($text);
   }
 
   /**
