@@ -355,9 +355,14 @@ var Chat = (function(){
     }
 
     r.handleYoutubeLinksClick = function(){
-        $(document).on("click", ".youtube-link", function(){
+        $(document).on("click", ".youtube-link", function(e){
             var id = $(this).attr("href");
-            $(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
+
+            if(e.metaKey) {
+                window.open("//www.youtube.com/watch?v=" + id);
+            } else {
+                $(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
+            }
 
             return false;
         });
