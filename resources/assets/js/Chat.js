@@ -105,7 +105,10 @@ var Chat = (function(){
     }
 
     r.onStart = function(){
-
+        var chat = document.querySelector(".chats");
+        //chat.innerHTML = Autolinker.link(chat.innerHTML);
+        chat.innerHTML = this.parseLink(chat.innerHTML);
+        this.convertAllYoutubeLinks();
     }
 
     r.onLoad = function(){
@@ -212,7 +215,6 @@ var Chat = (function(){
 
         this.createDBEntry(raw, handy);
     }
-
 
     r.bindChannel = function(){
         this.chatChannel.bind(channel.chat.event.message, this.chatChannelCallback.bind(this));
@@ -381,14 +383,30 @@ var Chat = (function(){
 
         youtubeBox.find(".youtube-link").each(function(index, value){
             $.ajax({
-                url: "../public/getYoutubeTitle/" + $(this).attr("href"),
+                url: "../public/getYoutubeTitle/" + $(this).attr("href") + "/" + index,
                 async: false
             }).done(function(val){
-                youtubeBox.find(".youtube-link:eq(" + index + ")").find("em").text(val);
+                val = JSON.parse(val);
+                youtubeBox.find(".youtube-link:eq(" + val.index + ")").find("em").text(val.title);
             });
         });
 
         this.removeFlag(flags.YOUTUBE_LINK);
+    }
+    r.convertAllYoutubeLinks = function(){
+        var youtubeBox;
+
+        youtubeBox = $(".box");
+
+        youtubeBox.find(".youtube-link").each(function(index, value){
+            $.ajax({
+                url: "../public/getYoutubeTitle/"+ $(this).attr("href") + "/" + index
+            }).done(function(val){
+                val = JSON.parse(val);
+                $(this).find("em").text(val.title);
+            }.bind(this));
+        });
+
     }
 
     r.getCurrentChatID = function(){
