@@ -48,7 +48,7 @@
       $url_short = $url_full;
     }
 
-    $url_short = preg_replace('#^http://#', '', $url_full);
+    $url_short = preg_replace('#^https?://#', '', $url_full);
     $url_short = preg_replace('/^www\./', '', $url_short);
     if(strlen($url_full) > $max_url_length) {
       $url_short = substr($url_short, 0, $max_url_length) . '..';
