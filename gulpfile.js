@@ -96,6 +96,7 @@ gulp.task("copySound", function(){
 
 gulp.task("watch", function(){
     gulp.watch("./resources/**/*.js", ["browserify"]);
+    gulp.watch("./resources/**/*.ini", ["browserify"]);
     gulp.watch('./resources/assets/scss/**/*.scss', ["sass"]);
     gulp.watch('./resources/assets/img/*.png', ["sprite"]);
     gulp.watch('./resources/assets/img/meme/*.png', ["sprite memes"]);
