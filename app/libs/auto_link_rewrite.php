@@ -13,9 +13,9 @@
     $url_full = $matches[0];
     $url_short = '';
 
-    //if (strlen($url_full) > $max_url_length) {
+    if (strlen($url_full) > $max_url_length) {
       $parts = parse_url($url_full);
-      $url_short = /*$parts['scheme'] . '://' .*/ preg_replace('/^www\./', '', $parts['host']) . '/';
+      $url_short = $parts['scheme'] . '://' . preg_replace('/^www\./', '', $parts['host']) . '/';
 
       $path_components = explode('/', trim($parts['path'], '/'));
       foreach ($path_components as $dir) {
@@ -43,9 +43,15 @@
         $url_short .= $curr_component;
       }
 
-    //} else {
-      //$url_short = $url_full;
-    //}
+    } else {
+      $url_short = $url_full;
+    }
+
+    $url_full = preg_replace('#^http://#', '', $url_full);
+    $url_full = preg_replace('/^www\./', '', $url_full);
+    if(strlen($url_full) > $max_url_length) {
+      $url_full = substr($url_full, 0, $max_url_length) . '..';
+    }
 
     // Image.
     if( ! isMobile() && preg_match('/\.(jpeg|jpg|gif|png)$/', $url_full)) {
@@ -59,7 +65,7 @@
       return "<a class='youtube-link' href=$id><small></small><em>$title</em></a>";
     }
 
-    return "<a href='" . $url_full . "' target='_blank'>" . $url_short . "</a>";
+    return "<a href='" . $url_full . "' target='_blank'>" . $url_full . "</a>";
   }
 
   /**
