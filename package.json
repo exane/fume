@@ -1,9 +1,11 @@
 {
   "name": "fume",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "2 years old code. Do not look at them ;)",
   "main": "gulpfile.js",
   "dependencies": {
+    "pusher": "^1.0.2",
+    "pusher-client": "^0.2.2",
     "socket.io": "^0.9.17"
   },
   "devDependencies": {

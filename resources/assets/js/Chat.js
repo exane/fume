@@ -232,12 +232,12 @@ var Chat = (function(){
         }*/
         data = this.isJson(data) ? JSON.parse(data) : data;
         var userName = data.user;
-        var isHandy = data.handy;
+        var isHandy = data.handy || false;
         var message = data.message;
         var time = data.time;
         var id = data.id;
 
-        if(userName === this.getUserName()) return;
+        if(userName === this.getUserName() && !isHandy) return;
 
         this.addMessage(userName, message, time, isHandy, id);
         DisplayTyping().end();
