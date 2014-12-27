@@ -1,14 +1,6 @@
 <?php
 
   /**
-   * Autolink chat messages.
-   */
-  function autolink($text)
-  {
-    return $text; //auto_link_text($text);
-  }
-
-  /**
    * Return the title of a youtube video.
    */
   function getYoutubeTitle($id)
