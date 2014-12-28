@@ -49,6 +49,10 @@
 
   a {
     font-style: italic;
+
+    &:active {
+      opacity: .6;
+    }
   }
 
   span {
@@ -105,6 +109,7 @@
 
   a {
     color: #d7f0ae;
+    border-bottom: 1px solid #bad490;
   }
 }
 
@@ -123,6 +128,7 @@
 
   a {
     color: #868686;
+    border-bottom: 1px solid #cdcdcd;
   }
 }
 
@@ -132,6 +138,7 @@
   position: relative;
   width: 170px;
   height: 12px;
+  border: 0 !important;
 
   &:active em {
     opacity: .6;
