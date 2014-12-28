@@ -47,6 +47,10 @@
   max-width: 310px;
   padding: 10px;
 
+  a {
+    font-style: italic;
+  }
+
   span {
     clear: both;
     cursor: default;
@@ -98,6 +102,10 @@
   i {
     @extend .sprite-handy_gruen;
   }
+
+  a {
+    color: #d7f0ae;
+  }
 }
 
 .box-partner {
@@ -111,6 +119,10 @@
 
   i {
     @extend .sprite-handy_weiss;
+  }
+
+  a {
+    color: #868686;
   }
 }
 
@@ -132,14 +144,6 @@
     margin: 0 3px 0 2px;
     position: absolute;
     top: 0;
-  }
-
-  .box-me & {
-    color: #d7f0ae;
-  }
-
-  .box-partner & {
-    color: #868686;
   }
 }
 
