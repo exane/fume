@@ -1,5 +1,6 @@
 var $ = require("jquery");
-var FumePush = require("./FumePushClient.js");
+//var FumePush = require("./FumePushClient.js");
+var socketCluster = require("socketcluster-client");
 var Config = require("./Config.js");
 var DisplayTyping = require("./Display.js");
 var Autolinker = require("autolinker");
@@ -17,14 +18,9 @@ var keyCode = {
 }
 
 var channel = {
-    chat: {
-        channelName: "chat",
-        event: {
-            message: "send",
-            typing: "typing",
-            messageError: "messageError"
-        }
-    }
+    message: "fume/message",
+    typing: "fume/typing",
+    messageError: "fume/messageError"
 }
 
 var flags = {
@@ -60,7 +56,9 @@ var Chat = (function(){
 
 
     r.socket = null;
-    r.chatChannel = null;
+    r.channelMessage = null;
+    r.channelTyping = null;
+    r.channelMessageError = null;
 
 
     r.$chat = null;
@@ -98,9 +96,11 @@ var Chat = (function(){
 
     r.initSockets = function(){
         var cfg = Config().get();
-        this.socket = new FumePush(cfg["url_origin"], 8000);
+        this.socket = socketCluster.connect({port: 8000}); //new FumePush(cfg["url_origin"], 8000);
 
-        this.chatChannel = this.socket.subscribe(channel.chat.channelName);
+        this.channelMessage = this.socket.subscribe(channel.message);
+        this.channelTyping = this.socket.subscribe(channel.typing);
+        this.channelMessageError = this.socket.subscribe(channel.messageError);
 
 
         this.setUserName(cfg["username"]);
@@ -137,7 +137,7 @@ var Chat = (function(){
         if((this._typingTimeFlag + 3000) < Date.now()){
             this._typingTimeFlag = Date.now();
 
-            this.chatChannel.trigger(channel.chat.event.typing, {
+            this.socket.emit(channel.typing, {
                 user: this.getUserName()
             })
         }
@@ -206,7 +206,7 @@ var Chat = (function(){
         this.empty();
         this._typingTimeFlag = 0;
 
-        this.chatChannel.trigger(channel.chat.event.message, {
+        this.socket.emit(channel.message, {
             user: this.getUserName(),
             handy: handy,
             message: raw,
@@ -219,9 +219,9 @@ var Chat = (function(){
     }
 
     r.bindChannel = function(){
-        this.chatChannel.bind(channel.chat.event.message, this.chatChannelCallback.bind(this));
-        this.chatChannel.bind(channel.chat.event.typing, this.userTypesChannelCallback.bind(this));
-        this.chatChannel.bind(channel.chat.event.messageError, this.messageErrorCallback.bind(this));
+        this.socket.watch(channel.message, this.chatChannelCallback.bind(this));
+        this.socket.watch(channel.typing, this.userTypesChannelCallback.bind(this));
+        this.socket.watch(channel.messageError, this.messageErrorCallback.bind(this));
     }
 
     r.chatChannelCallback = function(data){
@@ -281,8 +281,8 @@ var Chat = (function(){
             }
         }).done(function(val){
         }).fail(function(val){
-            _this.chatChannel.trigger(channel.chat.event.messageError, {
-                id: ID
+            _this.socket.emit(channel.messageError, {
+                id: ID || "closure error"
             });
         });
     }
@@ -398,6 +398,7 @@ var Chat = (function(){
 
         this.removeFlag(flags.YOUTUBE_LINK);
     }
+
     r.convertAllYoutubeLinks = function(){
         var youtubeBox;
 

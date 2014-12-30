@@ -1,45 +1,16 @@
-var FumePush = require("./FumePushServer.js");
-var Pusher = require("pusher"); //only for legacy support (handy)
-var PusherClient = require("pusher-client");
-//require("v8-profiler");
+var argv = require('minimist')(process.argv.slice(2));
+var SocketCluster = require('socketcluster').SocketCluster;
 
-var pusher = new Pusher({
-    appId: '49001',
-    key: '46a076615faeaaaa5f96',
-    secret: 'd36f7cd4e3b4fb67a5e7'
-});
-var pusherClient = new PusherClient("46a076615faeaaaa5f96");
-pusherClientChannel = pusherClient.subscribe("nachrichten");
-
-var fumePush = new FumePush(8000);
-
-fumePush.bind("send", function(data){
-    if(typeof data.data._legacy === "undefined") return;
-    console.log("event called on server! room: " + data.room + " event: " + data.event + " data: ", data.data);
-    pusher.trigger("nachrichten", "nachrichten senden", {
-        "benutzer": data.data.user,
-        "nachricht": data.data.message,
-        "zeit": data.data.time,
-        "handy": data.data.handy
-    });
-})
-
-fumePush.bind("messageError", function(data){
-    console.error("Message has not saved! ID: %d", data.id);
-})
-
-fumePush.bind("typing", function(data){
-    //console.log("event called on server! room: " + data.room + " event: " + data.event + " data: ", data.data);
-})
-
-pusherClientChannel.bind("nachrichten senden", function(data){
-    if(!data.handy) return;
-    console.log("trigger: pusher", data);
-    fumePush.trigger("send", {
-        user: data.benutzer,
-        message: data.nachricht,
-        time: data.zeit,
-        handy: data.handy,
-        id: "cmd"
-    }, "chat");
+var socketCluster = new SocketCluster({
+  balancers: Number(argv.b) || 1,
+  workers: Number(argv.w) || 1,
+  stores: Number(argv.s) || 1,
+  port: Number(argv.p) || 8000,
+  appName: argv.n || 'fume',
+  workerController: __dirname + '/worker.js',
+  balancerController: __dirname + '/balancer.js',
+  storeController: __dirname + '/store.js',
+  addressSocketLimit: 0,
+  socketChannelLimit: 100,
+  rebootWorkerOnCrash: !argv.debug
 });
