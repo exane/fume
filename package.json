@@ -6,7 +6,7 @@
   "dependencies": {
     "pusher": "^1.0.2",
     "pusher-client": "^0.2.2",
-    "socket.io": "^0.9.17"
+    "socket.io": "^1.2.1"
   },
   "devDependencies": {
     "autolinker": "^0.15.0",

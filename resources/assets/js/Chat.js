@@ -271,6 +271,7 @@ var Chat = (function(){
 
     r.createDBEntry = function(text, handy, id){
         var _this = this;
+        var ID = id;
         $.ajax({
             url: "../public/createDBEntry",
             type: "post",
@@ -281,7 +282,7 @@ var Chat = (function(){
         }).done(function(val){
         }).fail(function(val){
             _this.chatChannel.trigger(channel.chat.event.messageError, {
-                id: id
+                id: ID
             });
         });
     }

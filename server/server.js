@@ -1,6 +1,7 @@
 var FumePush = require("./FumePushServer.js");
 var Pusher = require("pusher"); //only for legacy support (handy)
 var PusherClient = require("pusher-client");
+//require("v8-profiler");
 
 var pusher = new Pusher({
     appId: '49001',
@@ -21,6 +22,10 @@ fumePush.bind("send", function(data){
         "zeit": data.data.time,
         "handy": data.data.handy
     });
+})
+
+fumePush.bind("messageError", function(data){
+    console.error("Message has not saved! ID: %d", data.id);
 })
 
 fumePush.bind("typing", function(data){
