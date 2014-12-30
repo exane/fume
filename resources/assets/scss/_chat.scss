@@ -47,6 +47,14 @@
   max-width: 310px;
   padding: 10px;
 
+  a {
+    font-style: italic;
+
+    &:active {
+      opacity: .6;
+    }
+  }
+
   span {
     clear: both;
     cursor: default;
@@ -98,6 +106,11 @@
   i {
     @extend .sprite-handy_gruen;
   }
+
+  a {
+    color: #d7f0ae;
+    border-bottom: 1px solid #bad490;
+  }
 }
 
 .box-partner {
@@ -112,6 +125,11 @@
   i {
     @extend .sprite-handy_weiss;
   }
+
+  a {
+    color: #868686;
+    border-bottom: 1px solid #cdcdcd;
+  }
 }
 
 .youtube-link {
@@ -120,6 +138,7 @@
   position: relative;
   width: 170px;
   height: 12px;
+  border: 0 !important;
 
   &:active em {
     opacity: .6;
@@ -132,14 +151,6 @@
     margin: 0 3px 0 2px;
     position: absolute;
     top: 0;
-  }
-
-  .box-me & {
-    color: #d7f0ae;
-  }
-
-  .box-partner & {
-    color: #868686;
   }
 }
 
