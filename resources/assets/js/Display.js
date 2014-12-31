@@ -28,7 +28,7 @@ var DisplayTyping = (function(){
         if(this._timeoutInstance) return this._timeout();
         var box = $("<div class='box box-partner'><img></div>");
 
-        box.find("img").attr("src", cfg().get().img_url + "gif.gif");
+        box.find("img").attr("src", cfg().getCfg().img_url + "gif.gif");
 
         box.addClass("typing");
 

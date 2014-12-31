@@ -7,7 +7,7 @@ var Sound = (function(){
         if(!(this instanceof Sound))
             return (new Sound());
 
-        this.url = Config().get().sound_url;
+        this.url = Config().getCfg().sound_url;
 
         this.load = new Audio(this.getTrack());
         this.load.volume = this.getVolume();
