@@ -1,8 +1,8 @@
 //var list = require("./meme_data.js");
 var Config = require("./Config.js");
-var fs = require("fs");
-var ini = require("ini");
-var list = ini.parse(fs.readFileSync(__dirname + "/../data/memes.ini", "utf-8"));
+/*var fs = require("fs");
+var ini = require("ini");*/
+//var list = ini.parse(fs.readFileSync(__dirname + "/../data/memes.ini", "utf-8"));
 
 
 
@@ -28,7 +28,8 @@ var Meme = (function(){
         return res;
     }
     r.display = function(text){
-        var cfg = Config().get();
+        var cfg = Config().getCfg();
+        var list = Config().getMeme();
         text = this.compile(text);
         for(var word in list) {
             text = this._replaceAll(list[word], "<strong class='meme meme-" + word + "'></strong>", text);

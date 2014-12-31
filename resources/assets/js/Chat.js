@@ -37,7 +37,7 @@ var Chat = (function(){
         Chat._singleton = this;
 
 
-        $.when(Config().load())
+        $.when(Config().load(), Config().loadMeme())
         .then(this.init.bind(this))
         .then(this.initSockets.bind(this))
         .then(this.bindChannel.bind(this));
@@ -72,7 +72,7 @@ var Chat = (function(){
     }
 
     r.init = function(){
-        this.setUrl(Config().get().url);
+        this.setUrl(Config().getCfg().url);
         this.initChatFlag();
         this.setChatFocus();
         this.handleYoutubeLinksClick();
@@ -95,7 +95,7 @@ var Chat = (function(){
     }
 
     r.initSockets = function(){
-        var cfg = Config().get();
+        var cfg = Config().getCfg();
         this.socket = socketCluster.connect({port: 8000}); //new FumePush(cfg["url_origin"], 8000);
 
         this.channelMessage = this.socket.subscribe(channel.message);
