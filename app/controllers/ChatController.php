@@ -7,7 +7,9 @@
      */
     public function createDBEntry()
     {
-      $chat = new Chat();
+      if( ! $chat = new Chat()) {
+        return header($_SERVER['SERVER_PROTOCOL'] . ' 501 Can not create chat object', true, 501);
+      }
 
       return $chat->saveChatMessage();
     }
