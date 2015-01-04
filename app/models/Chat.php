@@ -14,7 +14,7 @@
             $query = $this->db->prepare($sql);
 
             if( ! $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy])) {
-              header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+              header($_SERVER['SERVER_PROTOCOL'] . ' 500 Can not execute query', true, 500);
               return $this->db->errorInfo();
             }
         }
