@@ -88,11 +88,11 @@ var Chat = (function(){
 
         this.setUserName(cfg["username"]);
 
-        var intVal = setInterval(function(){
+        /*var intVal = setInterval(function(){
             if(!this.socket.connected) return;
             this.socket.emit(Flag.channel.userConnected, this.getUserName());
             clearInterval(intVal);
-        }.bind(this),100);
+        }.bind(this),100);*/
 
     }
 
@@ -210,6 +210,7 @@ var Chat = (function(){
         })
 
         this.socket.on("connect", function(){
+            self.socket.emit(Flag.channel.userConnected, self.getUserName());
             if(!self._started){
                 self._started = true;
                 return;
