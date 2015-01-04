@@ -25,6 +25,11 @@
 
             echo json_encode($res);
         }
+        public function loadMissedMessages($time, $username) {
+            $chat = new Chat();
+
+            echo json_encode($chat->getMessagesSince($time, $username));
+        }
 
         /**
          * Get youtube title for chat message.

@@ -1,12 +1,12 @@
 .sprite-extern_gruen {
   background-image: url(../img/sprite.png);
-  background-position: 0px -8px;
+  background-position: 0px -35px;
   width: 11px;
   height: 9px;
 }
 .sprite-extern_weiss {
   background-image: url(../img/sprite.png);
-  background-position: 0px -35px;
+  background-position: 0px -71px;
   width: 11px;
   height: 9px;
 }
@@ -24,9 +24,39 @@
 }
 .sprite-logout {
   background-image: url(../img/sprite.png);
-  background-position: 0px -44px;
+  background-position: 0px -89px;
   width: 16px;
   height: 16px;
+}
+.sprite-mark-all-ok {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -44px;
+  width: 15px;
+  height: 9px;
+}
+.sprite-mark-db-saved {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -53px;
+  width: 15px;
+  height: 9px;
+}
+.sprite-mark-error-db {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -62px;
+  width: 15px;
+  height: 9px;
+}
+.sprite-mark-error-sc {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -8px;
+  width: 15px;
+  height: 9px;
+}
+.sprite-mark-sc-saved {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -80px;
+  width: 15px;
+  height: 9px;
 }
 .sprite-message_error {
   background-image: url(../img/sprite.png);
@@ -36,31 +66,31 @@
 }
 .sprite-password {
   background-image: url(../img/sprite.png);
-  background-position: 0px -60px;
+  background-position: 0px -105px;
   width: 12px;
   height: 16px;
 }
 .sprite-play_fume {
   background-image: url(../img/sprite.png);
-  background-position: 0px -124px;
+  background-position: 0px -169px;
   width: 74px;
   height: 49px;
 }
 .sprite-search {
   background-image: url(../img/sprite.png);
-  background-position: 0px -76px;
+  background-position: 0px -121px;
   width: 16px;
   height: 16px;
 }
 .sprite-user {
   background-image: url(../img/sprite.png);
-  background-position: 0px -92px;
+  background-position: 0px -137px;
   width: 12px;
   height: 16px;
 }
 .sprite-youtube {
   background-image: url(../img/sprite.png);
-  background-position: 0px -108px;
+  background-position: 0px -153px;
   width: 16px;
   height: 16px;
 }

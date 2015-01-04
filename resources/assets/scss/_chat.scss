@@ -169,6 +169,19 @@
   }
 }
 
+.chat-state-icon {
+  display: inline;
+  float: right;
+  margin-top: 6px;
+  margin-left: 10px;
+}
+
+.sprite-mark-pending {
+  background-image: url(../img/pending.gif);
+  height: 9px;
+  width: 9px;
+}
+
 
 //memes
 .meme {

@@ -8,7 +8,8 @@ var PusherClient = require("pusher-client");
 var channel = {
     message: "fume/message",
     typing: "fume/typing",
-    messageError: "fume/messageError"
+    messageError: "fume/messageError",
+    userConnected: "fume/user/connection"
 }
 
 module.exports.run = function(worker){
@@ -37,7 +38,6 @@ module.exports.run = function(worker){
 
     pusherClientChannel.bind("nachrichten senden", function(data){
         if(!data.handy) return;
-        //console.log("trigger: pusher", data);
         scServer.global.publish(channel.message, {
             user: data.benutzer,
             message: data.nachricht,
@@ -48,15 +48,18 @@ module.exports.run = function(worker){
     });
 
     scServer.on('connection', function(socket){
-        activeSessions[socket.session.id] = socket.session;
         console.log("new socket connection");
+        activeSessions[socket.session.id] = socket.session;
+        var userName = null;
 
-        socket.on(channel.message, function(data){
+        socket.on(channel.message, function(data, res){
             console.log("message >> ", data);
+            res.end('Success'); // Send back success
 
             if(data._legacy !== false) return;
 
             socket.global.publish(channel.message, data);
+
             pusher.trigger("nachrichten", "nachrichten senden", {
                 "benutzer": data.user,
                 "nachricht": data.message,
@@ -70,18 +73,23 @@ module.exports.run = function(worker){
         })
 
         socket.on(channel.messageError, function(data){
-            console.log("messageError occured!");
+            console.error("messageError occured!", data);
         })
 
         socket.on("disconnect", function(){
-            console.log("socket disconnected");
+            console.log(userName + " disconnected");
+        })
+
+        socket.on(channel.userConnected, function(user, res){
+            console.log(user + " connected");
+            userName = user;
         })
 
 
     });
 
     scServer.on('sessionEnd', function(ssid){
-        console.log("session end");
+        //console.log("session end");
         delete activeSessions[ssid];
     });
 

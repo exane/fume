@@ -34,6 +34,7 @@
               echo $message->handy ? '<i></i>' : '';
             ?>
           </span>
+        <div class='chat-state-icon'></div>
         </div>
       <?php endforeach; ?>
     </div>
