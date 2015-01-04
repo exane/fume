@@ -13,7 +13,10 @@
             $sql   = 'INSERT INTO ' . $this->table . ' (inhalt, zeit, benutzer, handy) VALUES (:inhalt, :zeit, :benutzer, :handy)';
             $query = $this->db->prepare($sql);
 
-            return $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy]);
+            if( ! $query->execute([':inhalt1' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy])) {
+              header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+              return $this->db->errorInfo();
+            }
         }
 
         public function displayMeme($text) {
