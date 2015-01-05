@@ -7,10 +7,13 @@
      */
     public function createDBEntry()
     {
-      if( ! $chat = new Chat()) {
-        return header($_SERVER['SERVER_PROTOCOL'] . ' 501 Can not create chat object', true, 501);
-      }
+      $chat = new Chat();
 
-      return $chat->saveChatMessage();
+      try {
+        $chat->saveChatMessage();
+      } catch(Exception $e) {
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Can not execute query', true, 500);
+        return $e->getMessage();
+      }
     }
   }
