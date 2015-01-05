@@ -12,8 +12,7 @@
       try {
         $chat->saveChatMessage();
       } catch(Exception $e) {
-        header($_SERVER['SERVER_PROTOCOL'] . ' 500 Can not execute query', true, 500);
-        return $e->getMessage();
+        header($_SERVER['SERVER_PROTOCOL'] . ' 500 ' . $e->getMessage(), true, 500);
       }
     }
   }
