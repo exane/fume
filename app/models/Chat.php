@@ -16,7 +16,7 @@
             }
 
             if( ! $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy])) {
-              throw new \Exception($this->db->errorInfo());
+              throw new \Exception('Error in execute: ' . $this->db->errorInfo());
             }
         }
 
