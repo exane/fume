@@ -308,7 +308,7 @@ var Chat = (function(){
             data: {
                 handy: text.handy,
                 message: text.message,
-                user: this._userName
+                user: this.getUserName()
             }
         })
         .done(function(val){
