@@ -23,6 +23,7 @@
     <img id="splashscreenloader" src="<?php echo img_url ?>splashscreenloader.gif">
     <span>Lade Chat</span>
   </div>
+
   <div class="chat-wrap">
     <div class="chats">
       <?php foreach($messages as $message): ?>
@@ -37,6 +38,7 @@
         <div class='chat-state-icon'></div>
         </div>
       <?php endforeach; ?>
+      <div class="box box-partner typing"><img></div>
     </div>
     <textarea class="chatbox" placeholder="Schreib eine Nachricht..."
               data-cookie="<?php echo $username; ?>" autofocus></textarea>

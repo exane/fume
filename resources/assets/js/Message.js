@@ -54,7 +54,7 @@ var Message = (function(){
         if(this._isHandy)
             box.find("span").append("<i></i>");
 
-        this.$chat.append(box);
+        this.$chat.find('.typing').before(box);
 
         this._convertYoutubeLinks();
 

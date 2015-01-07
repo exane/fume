@@ -26,13 +26,11 @@ var DisplayTyping = (function(){
 
     r.start = function(){
         if(this._timeoutInstance) return this._timeout();
-        var box = $("<div class='box box-partner'><img></div>");
+        var box = $('.typing');
 
         box.find("img").attr("src", cfg().getCfg().img_url + "gif.gif");
 
-        box.addClass("typing");
-
-        this.$chat.append(box);
+        box.addClass("active");
 
         this._setTitle("... " + this._originTitle);
         this.updateTitle();
@@ -42,7 +40,7 @@ var DisplayTyping = (function(){
     r.end = function(){
         clearTimeout(this._timeoutInstance);
         this._timeoutInstance = null;
-        this.$chat.find(".typing").remove();
+        this.$chat.find(".typing").removeClass('active');
         this._setTitle(this._originTitle);
         this.updateTitle();
     }

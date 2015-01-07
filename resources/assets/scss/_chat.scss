@@ -94,6 +94,14 @@
   }
 }
 
+.typing {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
 .box-me {
   background: none repeat scroll 0 0 #86b639;
   border: 1px solid #86b639;
