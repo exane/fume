@@ -11,12 +11,13 @@
             $handy = input('handy') == 'true' ? true : false;
 
             $sql   = 'INSERT INTO ' . $this->table . ' (inhalt, zeit, benutzer, handy) VALUES (:inhalt, :zeit, :benutzer, :handy)';
-            if( ! $query = $this->db->prepare($sql)) {
-              throw new \Exception('Can not prepare');
-            }
+            $query = $this->db->prepare($sql);
 
-            if( ! $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => session('username')->get(), ':handy' => $handy])) {
-              throw new \Exception('Error in execute: ' . $this->db->errorInfo());
+            try {
+              $query->execute([':inhalt' => input('message'), ':zeit' => time(), ':benutzer' => input('user'), ':handy' => $handy]);
+            } catch(PDOException $e) {
+              header($_SERVER['SERVER_PROTOCOL'] . ' 500 ' . $e->getMessage(), true, 500);
+              echo $e->getMessage();
             }
         }
 

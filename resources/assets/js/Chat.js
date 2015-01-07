@@ -66,6 +66,8 @@ var Chat = (function(){
         this.handleYoutubeLinksClick();
         this.$chat = $(".chats");
 
+        this.setUserName($('.chatbox').attr('data-cookie'));
+
         $(".chatbox").on("keydown", this.onKeypress.bind(this));
 
         this._lastMessageReceived = (Date.now() / 1000) | 0;
@@ -86,7 +88,7 @@ var Chat = (function(){
         this.channelTyping = this.socket.subscribe(Flag.channel.typing);
         this.channelMessageError = this.socket.subscribe(Flag.channel.messageError);
 
-        this.setUserName(cfg["username"]);
+        //this.setUserName(cfg["username"]);
 
         /*var intVal = setInterval(function(){
             if(!this.socket.connected) return;
@@ -305,7 +307,8 @@ var Chat = (function(){
             cache: false,
             data: {
                 handy: text.handy,
-                message: text.message
+                message: text.message,
+                user: this._userName
             }
         })
         .done(function(val){
