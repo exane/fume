@@ -20,12 +20,6 @@ var Chat = (function(){
 
         if(Chat._singleton) return Chat._singleton;
         Chat._singleton = this;
-
-
-        $.when(Config().load(), Config().loadMeme())
-        .then(this.init.bind(this))
-        .then(this.initSockets.bind(this))
-        .then(this.bindChannel.bind(this));
     }
     var r = Chat.prototype;
 
@@ -78,6 +72,13 @@ var Chat = (function(){
         this.$chat.on("scroll", this.onScroll.bind(this));
 
         this.onStart();
+    }
+
+    r.start = function(){
+        $.when(Config().load(), Config().loadMeme())
+        .then(this.init.bind(this))
+        .then(this.initSockets.bind(this))
+        .then(this.bindChannel.bind(this));
     }
 
     r.initSockets = function(){

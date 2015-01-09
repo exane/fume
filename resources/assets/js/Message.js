@@ -86,25 +86,26 @@ var Message = (function(){
         this.state |= expr;
         box.removeClass().addClass("chat-state-icon");
 
-        if((this.state & (Flag.chatState.ERROR_DB | Flag.chatState.ERROR_SC)) == Flag.chatState.ALL_ERROR){
-            box.addClass("sprite-message_error");
+        if(this.state & Flag.chatState.ERROR){
+            if(this.state & Flag.chatState.ERROR_DB){
+                box.addClass("sprite-mark-error-db");
+            }
+            if(this.state & Flag.chatState.ERROR_SC){
+                box.addClass("sprite-mark-error-sc");
+            }
+            return;
         }
-        else if(this.state & Flag.chatState.ERROR_DB){
-            box.addClass("sprite-mark-error-db");
+
+        if(this.state & Flag.chatState.OK){
+            if((this.state & (Flag.chatState.SAVED_DB | Flag.chatState.SAVED_SC)) === Flag.chatState.OK){
+                box.addClass("sprite-mark-all-ok");
+                return;
+            }
+            /*if(this.state & (Flag.chatState.SAVED_SC | Flag.chatState.SAVED_DB)){
+                box.addClass("sprite-mark-sc-saved");
+            }*/
         }
-        else if(this.state & Flag.chatState.ERROR_SC){
-            box.addClass("sprite-mark-error-sc");
-        }
-        else if((this.state & (Flag.chatState.SAVED_DB | Flag.chatState.SAVED_SC)) == Flag.chatState.ALL_OK){
-            box.addClass("sprite-mark-all-ok");
-        }
-        else if(this.state & Flag.chatState.SAVED_DB){
-            box.addClass("sprite-mark-db-saved");
-        }
-        else if(this.state & Flag.chatState.SAVED_SC){
-            box.addClass("sprite-mark-sc-saved");
-        }
-        else if(this.state & Flag.chatState.PENDING){
+        if(this.state & Flag.chatState.PENDING){
             box.addClass("sprite-mark-pending");
         }
     }
