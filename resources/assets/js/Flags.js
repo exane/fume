@@ -22,8 +22,8 @@ var Flags = (function(){
         SAVED_SC: 0x4, //socketcluster
         ERROR_DB: 0x8,
         ERROR_SC: 0x10,
-        ALL_OK: 0x6, //0110
-        ALL_ERROR: 0x18 // 0001|1000
+        OK: 0x6, //0110
+        ERROR: 0x18 // 0001|1000
     }
 
     r.socketOptions = {
