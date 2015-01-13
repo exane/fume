@@ -55,6 +55,14 @@
     }
   }
 
+  a[href$="jpg"],
+  a[href$="jpeg"],
+  a[href$="jpe"],
+  a[href$="png"],
+  a[href$="gif"] {
+    border: 0 none;
+  }
+
   span {
     clear: both;
     cursor: default;
