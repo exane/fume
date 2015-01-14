@@ -13,8 +13,6 @@
   // Load composer autoloader.
   if(file_exists('../vendor/autoload.php')) require '../vendor/autoload.php';
 
-  // Load applications core.
-  require '../lib/Core.php';
-
   // Start the core.
+  require '../lib/Core.php';
   $core = new vume\Core();
