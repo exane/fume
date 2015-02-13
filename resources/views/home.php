@@ -15,7 +15,16 @@
 </aside>
 
 <section class="site-content">
-  <div class="youtube-wrap"></div>
+<!--  <div class="youtube-wrap"></div>-->
+    <!--<div class="fume-tab">
+        tab1
+    </div>
+    <div class="fume-tab">
+        tab2
+    </div>-->
+    <div class="fume-tab-content">
+
+    </div>
 </section>
 
 <aside class="site-tools">

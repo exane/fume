@@ -11,6 +11,7 @@ var imagesloaded = require("imagesloaded");
 var Message = require("./Message.js");
 var Scrollbar = require("./Scrollbar.js");
 var Flag = require("./Flags.js");
+var FumeTab = require("./FumeTabManager");
 
 
 var Chat = (function(){
@@ -42,6 +43,8 @@ var Chat = (function(){
     r._started = false;
     r._lastMessageReceived = null; //unix-timestamp
 
+    r.tabs = null;
+
 
     r.$chat = null;
 
@@ -59,6 +62,11 @@ var Chat = (function(){
         this.setChatFocus();
         this.handleYoutubeLinksClick();
         this.$chat = $(".chats");
+
+        this.tabs = FumeTab();
+        this.tabs.add("youtube", "<a class='youtube-link' href='vX3g7z5eNKs'><small></small><em>edIT- Laundry</em></a>");
+        this.tabs.add("canvas", "hier live zeichen ebene");
+        this.tabs.add("test", "test :)");
 
         this.setUserName($('.chatbox').attr('data-cookie'));
 
@@ -345,6 +353,7 @@ var Chat = (function(){
     }
 
     r.handleYoutubeLinksClick = function(){
+        var self = this;
         $(document).on("click", ".youtube-link", function(e){
             var id = $(this).attr("href");
 
@@ -352,7 +361,10 @@ var Chat = (function(){
                 window.open("//www.youtube.com/watch?v=" + id);
             }
             else {
-                $(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
+                //$(".youtube-wrap").html("<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>")
+                var title = $(this).find("em").text();
+                var content = "<iframe width='560' height='315' src='//www.youtube.com/embed/" + id + "?rel=0&autoplay=1' frameborder='0' allowfullscreen></iframe>";
+                self.tabs.add(title, content);
             }
 
             return false;

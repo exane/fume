@@ -7,3 +7,33 @@
     display: none;
   }
 }
+
+
+.fume-tab {
+  float: left;
+  border: 1px solid black;
+  width: 200px;
+  cursor: default;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 5px;
+
+  &.fume-tab-active {
+    background: #94c644;
+  }
+}
+
+.fume-tab-content {
+  clear: both;
+  margin-top: 30px;
+  //border: 1px solid red;
+
+  .fume-tab-content-private {
+    display: none;
+
+    &.fume-tab-content-active {
+      display: block;
+    }
+  }
+
+}

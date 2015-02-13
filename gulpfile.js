@@ -25,7 +25,7 @@ gulp.task("setup config", function(){
 })
 
 gulp.task('browserify', function(){
-    browserify('./resources/assets/js/main.js', {standalone: "fume", transform: "brfs"})
+    browserify('./resources/assets/js/main.js', {standalone: "fume", transform: "brfs", debug: true})
     .bundle().on("error", function(err){
         console.log(err);
     })
