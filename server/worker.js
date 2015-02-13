@@ -3,7 +3,7 @@ var express = require('express');
 var serveStatic = require('serve-static');
 var Pusher = require("pusher"); //only for legacy support (handy)
 var PusherClient = require("pusher-client");
-
+var _debug = true;
 
 var channel = {
     message: "fume/message",
@@ -14,6 +14,7 @@ var channel = {
 
 module.exports.run = function(worker){
     console.log('   >> Worker PID:', process.pid);
+
 
     var app = require('express')();
 
@@ -28,24 +29,28 @@ module.exports.run = function(worker){
 
     var activeSessions = {};
 
-    var pusher = new Pusher({
-        appId: '49001',
-        key: '46a076615faeaaaa5f96',
-        secret: 'd36f7cd4e3b4fb67a5e7'
-    });
-    var pusherClient = new PusherClient("46a076615faeaaaa5f96");
-    var pusherClientChannel = pusherClient.subscribe("nachrichten");
+    if(!_debug){
 
-    pusherClientChannel.bind("nachrichten senden", function(data){
-        if(!data.handy) return;
-        scServer.global.publish(channel.message, {
-            user: data.benutzer,
-            message: data.nachricht,
-            time: data.zeit,
-            handy: data.handy,
-            id: "cmd"
+        var pusher = new Pusher({
+            appId: '49001',
+            key: '46a076615faeaaaa5f96',
+            secret: 'd36f7cd4e3b4fb67a5e7'
         });
-    });
+        var pusherClient = new PusherClient("46a076615faeaaaa5f96");
+        var pusherClientChannel = pusherClient.subscribe("nachrichten");
+
+        pusherClientChannel.bind("nachrichten senden", function(data){
+            if(!data.handy) return;
+            scServer.global.publish(channel.message, {
+                user: data.benutzer,
+                message: data.nachricht,
+                time: data.zeit,
+                handy: data.handy,
+                id: "cmd"
+            });
+        });
+
+    }
 
     scServer.on('connection', function(socket){
         console.log("new socket connection");
@@ -60,12 +65,14 @@ module.exports.run = function(worker){
 
             socket.global.publish(channel.message, data);
 
-            pusher.trigger("nachrichten", "nachrichten senden", {
-                "benutzer": data.user,
-                "nachricht": data.message,
-                "zeit": data.time,
-                "handy": data.handy
-            });
+            if(!_debug){
+                pusher.trigger("nachrichten", "nachrichten senden", {
+                    "benutzer": data.user,
+                    "nachricht": data.message,
+                    "zeit": data.time,
+                    "handy": data.handy
+                });
+            }
         })
 
         socket.on(channel.typing, function(data){
