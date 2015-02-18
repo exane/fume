@@ -21,6 +21,24 @@
   &.fume-tab-active {
     background: #94c644;
   }
+  &:hover {
+    background: #b7f754;
+    .fume-tab-btn {
+      display: block;
+    }
+  }
+
+  .fume-tab-btn {
+    float: right;
+    //margin-top: 6px;
+    display: none;
+    padding: 5px;
+    &:hover {
+      //border: 1px solid red;
+      background: #ababab;
+      border-radius: 15px;
+    }
+  }
 }
 
 .fume-tab-content {

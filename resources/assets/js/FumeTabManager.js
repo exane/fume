@@ -18,10 +18,12 @@ var FumeTabManager = (function(){
     r._content = null;
     r._ids = null;
 
-    r.add = function(title, content){
+    r.add = function(title, content, isDesktop){
+        isDesktop = isDesktop || false;
         var newTab = Tab(title, this._ids++);
         this._tabs.push(newTab);
         this.setActive(newTab);
+        newTab.getBtnRef().on("click", this.onTabBtnClick.bind(this, newTab));
         newTab.addContent(content);
     }
 
@@ -56,6 +58,10 @@ var FumeTabManager = (function(){
 
     r.initEvents = function(){
         $(".site-content").on("mousedown", ".fume-tab", this.onTabClick.bind(this));
+    }
+
+    r.onTabBtnClick = function(tab){
+        this.remove(tab.getId());
     }
 
     r.onTabClick = function(e){
