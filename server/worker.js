@@ -28,7 +28,7 @@ module.exports.run = function(worker){
 
     var activeSessions = {};
 
-    if(!process.env.PUSHER){
+    if(process.env.PUSHER){
 
         var pusher = new Pusher({
             appId: '49001',
@@ -64,7 +64,7 @@ module.exports.run = function(worker){
 
             socket.global.publish(channel.message, data);
 
-            if(!process.env.PUSHER){
+            if(process.env.PUSHER){
                 pusher.trigger("nachrichten", "nachrichten senden", {
                     "benutzer": data.user,
                     "nachricht": data.message,
