@@ -3,7 +3,6 @@ var express = require('express');
 var serveStatic = require('serve-static');
 var Pusher = require("pusher"); //only for legacy support (handy)
 var PusherClient = require("pusher-client");
-var _debug = true;
 
 var channel = {
     message: "fume/message",
@@ -29,7 +28,7 @@ module.exports.run = function(worker){
 
     var activeSessions = {};
 
-    if(!_debug){
+    if(!process.env.PUSHER){
 
         var pusher = new Pusher({
             appId: '49001',
@@ -65,7 +64,7 @@ module.exports.run = function(worker){
 
             socket.global.publish(channel.message, data);
 
-            if(!_debug){
+            if(!process.env.PUSHER){
                 pusher.trigger("nachrichten", "nachrichten senden", {
                     "benutzer": data.user,
                     "nachricht": data.message,
