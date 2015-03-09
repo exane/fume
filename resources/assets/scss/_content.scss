@@ -2,12 +2,12 @@
   float: left;
   padding: 30px;
   width: calc(100% - 650px);
+  height: calc(100% - 100px);
 
   @include mq(mobile) {
     display: none;
   }
 }
-
 
 .fume-tab {
   float: left;
@@ -43,15 +43,57 @@
 
 .fume-tab-content {
   clear: both;
-  margin-top: 30px;
+  margin-top: 0px;
   //border: 1px solid red;
+  height: 100%;
+  border-top: 1px solid black;
 
   .fume-tab-content-private {
     display: none;
+    height: 100%;
 
     &.fume-tab-content-active {
       display: block;
     }
   }
 
+}
+
+.unselectable {
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.tab-desktop-icon {
+  border: 1px solid black;
+  height: 64px;
+  width: 64px;
+  border-radius: 7px;
+  float: left;
+  margin: 5px;
+  text-align: center;
+  background: #bdfa52;
+  word-wrap: break-word;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #282828;
+
+  &:hover {
+    background: #caff46;
+  }
+}
+
+
+.tab-desktop-icon-more {
+  background: #ffffff;
+  padding-top: 8px;
+  font-size: 35px;
+  &:after {
+    content: "+";
+  }
+  &:hover {
+    background: #f4f4f4;
+  }
 }

@@ -32,4 +32,19 @@
 
       return false;
     }
+
+    public function loadDesktopApp($contentID) {
+      $sql = 'select content from desktop, benutzer where name = :username and benutzer.id = user and desktop.id = :id';
+      $query = $this->db->prepare($sql);
+      $query->execute([":username" => $_COOKIE['username'], ":id" => $contentID]);
+
+      return $query->fetch();
+    }
+    public function loadDesktop() {
+      $sql = 'select title, desktop.id id from desktop, benutzer where name = :username and benutzer.id = user';
+      $query = $this->db->prepare($sql);
+      $query->execute([":username" => $_COOKIE['username']]);
+
+      return $query->fetchAll();
+    }
   }

@@ -11,3 +11,5 @@
   $route->get('/getYoutubeTitle/{id}/{index}', 'AjaxController@getYoutubeTitle');
 
   $route->post('/createDBEntry', 'ChatController@createDBEntry');
+  $route->get('/loadDesktopApp/{$contentID}', 'AjaxController@loadDesktopApp');
+  $route->get('/loadDesktop', 'AjaxController@loadDesktop');
