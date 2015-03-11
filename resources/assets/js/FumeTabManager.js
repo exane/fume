@@ -1,4 +1,5 @@
 var Tab = require("./FumeTab");
+var Desktop = require("./DesktopTab");
 var $ = require("jquery");
 
 
@@ -20,7 +21,7 @@ var FumeTabManager = (function(){
 
   r.add = function(title, contentID, isDesktop){
     isDesktop = isDesktop || false;
-    var newTab = Tab(title, this._ids++, isDesktop);
+    var newTab = isDesktop ? Desktop(title, this._ids++) : Tab(title, this._ids++, isDesktop);
     this._tabs.push(newTab);
     this.setActive(newTab);
     newTab.getBtnRef().on("click", this.onTabBtnClick.bind(this, newTab));
@@ -61,7 +62,7 @@ var FumeTabManager = (function(){
   r.initEvents = function(){
     $(".site-content")
     .on("mousedown", ".fume-tab", this.onTabClick.bind(this))
-    .on("mousedown", ".tab-desktop-icon", this.onDesktopIconClick.bind(this));
+    .on("mousedown", ".tab-desktop-icon:not(.tab-desktop-icon-more)", this.onDesktopIconClick.bind(this));
   }
 
   r.onTabBtnClick = function(tab){
@@ -87,7 +88,11 @@ var FumeTabManager = (function(){
   }
 
   r.onTabClick = function(e){
+    var $target = $(e.target);
     var id = $(e.target).data().id;
+    if(typeof id === "undefined"){
+      id = $target.parent().data().id;
+    }
 
     if(e.which == 3){ //right click
       return;

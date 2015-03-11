@@ -13,3 +13,4 @@
   $route->post('/createDBEntry', 'ChatController@createDBEntry');
   $route->get('/loadDesktopApp/{$contentID}', 'AjaxController@loadDesktopApp');
   $route->get('/loadDesktop', 'AjaxController@loadDesktop');
+  $route->post('/saveAppAs', 'AjaxController@saveAppAs');

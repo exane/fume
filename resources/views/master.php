@@ -8,6 +8,8 @@
   <title>fume</title>
 
   <link href="<?php echo autoCache('assets/css/core.css'); ?>" rel="stylesheet">
+  <link href="<?php echo autoCache('assets/css/vex.css'); ?>" rel="stylesheet">
+  <link href="<?php echo autoCache('assets/css/vex-theme-flat-attack.css'); ?>" rel="stylesheet">
   <link href="<?php echo autoCache('favicon.ico'); ?>" rel="icon" type="image/x-icon">
 
 </head>

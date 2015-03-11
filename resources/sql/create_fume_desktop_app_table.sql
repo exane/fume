@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Mrz 2015 um 19:40
+-- Erstellungszeit: 09. Mrz 2015 um 19:39
 -- Server Version: 5.6.17
 -- PHP-Version: 5.5.12
 
@@ -20,20 +20,19 @@ SET time_zone = "+00:00";
 -- Datenbank: `fume`
 --
 
+-- --------------------------------------------------------
+
 --
--- TRUNCATE Tabelle vor dem Einfügen `desktop`
+-- Tabellenstruktur für Tabelle `desktopApps`
 --
 
-TRUNCATE TABLE `desktop`;
---
--- Daten für Tabelle `desktop`
---
-
-INSERT INTO `desktop` (`id`, `user`, `title`, `content`) VALUES
-(1, 2, 'youtube', '<iframe style="width: 100%; height: 100%;" width="560" height="315" src="https://www.youtube.com/embed/efR4kpts6eg" frameborder="0" allowfullscreen></iframe>'),
-(2, 2, 'goku ssj3', 'lol verarscht!'),
-(3, 1, 'youtube', '<iframe style="width: 100%; height: 100%;" width="560" height="315" src="https://www.youtube.com/embed/efR4kpts6eg" frameborder="0" allowfullscreen></iframe>'),
-(4, 1, 'goku ssj3', 'lol verarscht!');
+DROP TABLE IF EXISTS `desktopApps`;
+CREATE TABLE IF NOT EXISTS `desktopApps` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `content` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

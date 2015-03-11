@@ -16,11 +16,6 @@ var FumeTab = (function(){
 
     this.add(title, desktop);
     this.active = false;
-
-    if(this._isDesktop = desktop){
-      this._removeCloseButton();
-    }
-
   };
   var r = FumeTab.prototype;
   var root = null;
@@ -66,32 +61,15 @@ var FumeTab = (function(){
     this._privateContentRef.attr("data-id", this._id);
   }
 
-  r._removeCloseButton = function(){
-    this._tabBtn.remove();
-  }
-
   r.remove = function(){
-    if(this._isDesktop) return;
     this._ref.remove();
     this._privateContentRef.remove();
   }
 
   r.addContent = function(contentID){
     contentID = contentID || null
-    /*
-        this._contentRef.append(this._privateContentRef);
-        this._privateContentRef.html(content);*/
-    this._contentRef.append(this._privateContentRef);
 
-    if(this.isDesktop()){
-      $.ajax("../public/loadDesktop")
-      .done(function(res){
-        res = JSON.parse(res);
-        this._renderDesktop(res);
-        this._addCreateButton();
-      }.bind(this));
-      return;
-    }
+    this._contentRef.append(this._privateContentRef);
 
     $.ajax("../public/loadDesktopApp/" + contentID)
     .done(function(res){
@@ -100,11 +78,6 @@ var FumeTab = (function(){
     }.bind(this));
   }
 
-  r._renderDesktop = function(data){
-    data.forEach(function(row){
-      this._privateContentRef.append('<div class="tab-desktop-icon" data-title="' + row.title + '" data-id="' + row.id + '">' + row.title + '</div>');
-    }.bind(this));
-  }
 
   r.getBtnRef = function(){
     return this._tabBtn;
@@ -117,12 +90,6 @@ var FumeTab = (function(){
   r.isDesktop = function(){
     return this._isDesktop;
   }
-
-  r._addCreateButton = function(){
-    var div = '<div class="tab-desktop-icon tab-desktop-icon-more"></div>';
-    this._privateContentRef.append(div);
-  }
-
 
   return FumeTab;
 })();

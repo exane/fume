@@ -67,14 +67,8 @@ var Chat = (function(){
     this.setUserName($('.chatbox').attr('data-cookie'));
 
     this.tabs = FumeTab();
-    //this.tabs.add("Desktop", "../resources/assets/tabTemplate/desktop.html", true);
-    this.tabs.add("Desktop", "../public/loadDesktop/" + this.getUserName(), true);
-    /*
-    this.tabs.add("youtube", "");
-    this.tabs.add("canvas", "");
-    this.tabs.add("test", "");*/
+    this.tabs.add("Desktop", "../public/loadDesktop/", true);
     this.tabs.setActive(0);
-
 
     $(".chatbox").on("keydown", this.onKeypress.bind(this));
 

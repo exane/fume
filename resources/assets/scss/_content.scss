@@ -41,10 +41,19 @@
   }
 }
 
+.fume-tab-desktop {
+  width: 28px;
+  border-radius: 0;
+  border-top-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  margin-right: 5px;
+  background: #dbfda8;
+  margin-bottom: 3px;
+}
+
 .fume-tab-content {
   clear: both;
   margin-top: 0px;
-  //border: 1px solid red;
   height: 100%;
   border-top: 1px solid black;
 
@@ -85,7 +94,6 @@
   }
 }
 
-
 .tab-desktop-icon-more {
   background: #ffffff;
   padding-top: 8px;
@@ -95,5 +103,11 @@
   }
   &:hover {
     background: #f4f4f4;
+  }
+}
+
+.vex-content {
+  textarea {
+    min-height: 500px !important;
   }
 }

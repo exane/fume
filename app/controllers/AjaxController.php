@@ -50,4 +50,11 @@
       $user = new User();
       echo json_encode($user->loadDesktop());
     }
+
+    public function saveAppAs() {
+      $title = input("title", false);
+      $code = input("code", false);
+      $user = new User();
+      $user->saveAppAs($title, $code);
+    }
   }
