@@ -9,6 +9,7 @@ var Cmd = require("./Command.js");
 var Sound = require("./Sound.js");
 var imagesloaded = require("imagesloaded");
 var Message = require("./Message.js");
+var System = require("./SystemMessage");
 var Scrollbar = require("./Scrollbar.js");
 var Flag = require("./Flags.js");
 var FumeTab = require("./FumeTabManager");
@@ -222,7 +223,7 @@ var Chat = (function(){
 
     this.socket.on("disconnect", function(){
       //self.addMessage("system", "System >> Disconnected", false, "cmd");
-      Message({user: "System", message: "System >> Disconnected", id: "cmd"});
+      System({user: "System", message: "System >> Disconnected", id: "cmd"});
     })
 
     this.socket.on("connect", function(){
@@ -232,7 +233,7 @@ var Chat = (function(){
         return;
       }
       //self.addMessage("system", "System >> Connected", self.getChatTime(), false, "cmd");
-      Message({user: "System", message: "System >> Connected", id: "cmd"});
+      System({user: "System", message: "System >> Connected", id: "cmd"});
       self.missedMessages();
     })
   }
@@ -246,12 +247,12 @@ var Chat = (function(){
       data = JSON.parse(data);
       if(data[0].ids == 0) return;
       //self.addMessage("System", "System >> "+data[0].ids + " missed Messages!", self.getChatTime(), false, "cmd");
-      Message({user: "System", message: "System >> " + data[0].ids + " missed Messages!", id: "cmd"});
+      System({user: "System", message: "System >> " + data[0].ids + " missed Messages!", id: "cmd"});
     })
     .fail(function(err, status, jqXHR){
       if(err){
         //self.addMessage("System", "Error >> Couldn't connect to Server! (php/ajax request)", self.getChatTime(), false, "cmd");
-        Message({
+        System({
           user: "System",
           message: "Error >> Couldn't connect to Server! (php/ajax request) " + status,
           id: "cmd"
@@ -337,7 +338,7 @@ var Chat = (function(){
     })
     .fail(function(err){
       //self.addMessage("System", "Error >> DB save error! Couldn't connect to Server! (php/ajax request)", self.getChatTime(), false, "cmd");
-      Message({
+      System({
         user: "System",
         message: "Error >> DB save error! Couldn't connect to Server! (php/ajax request)",
         id: "cmd"
