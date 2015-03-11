@@ -28,7 +28,6 @@ var SystemMessage = (function(){
     box.addClass("box-system");
 
     box.find("p").append(this._time + ": " + this._message);
-    box.find("span").append(this._time);
 
     this.$chat.find('.typing').before(box);
 
