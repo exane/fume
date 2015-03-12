@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 09. Mrz 2015 um 19:40
+-- Erstellungszeit: 11. Mrz 2015 um 17:55
 -- Server Version: 5.6.17
 -- PHP-Version: 5.5.12
 
@@ -21,17 +21,20 @@ SET time_zone = "+00:00";
 --
 
 --
--- TRUNCATE Tabelle vor dem Einfügen `desktopApps`
+-- TRUNCATE Tabelle vor dem Einfügen `desktop`
 --
 
-TRUNCATE TABLE `desktopApps`;
+TRUNCATE TABLE `desktop`;
 --
--- Daten für Tabelle `desktopApps`
+-- Daten für Tabelle `desktop`
 --
 
-INSERT INTO `desktopApps` (`id`, `title`, `content`) VALUES
-(1, 'youtube', '<iframe style="width: 100%; height: 100%;" width="560" height="315" src="https://www.youtube.com/embed/efR4kpts6eg" frameborder="0" allowfullscreen></iframe>'),
-(2, 'goku ssj3', 'lol verarscht!');
+INSERT INTO `desktop` (`user`, `app`) VALUES
+(2, 1),
+(2, 2),
+(1, 1),
+(1, 2),
+(2, 2);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -7,6 +7,8 @@ var SystemMessage = (function(){
     if(!(this instanceof SystemMessage)){
       return (new SystemMessage(opt));
     }
+    opt.user = "System";
+    opt.id = "cmd"
     Message.call(this, opt);
     /**
      * constructor here

@@ -8,7 +8,6 @@ var FumeTabManager = (function(){
     if(!(this instanceof FumeTabManager))
       return (new FumeTabManager());
 
-
     this._tabs = [];
     this._ids = 0;
     this.initEvents();
@@ -61,8 +60,8 @@ var FumeTabManager = (function(){
 
   r.initEvents = function(){
     $(".site-content")
-    .on("mousedown", ".fume-tab", this.onTabClick.bind(this))
-    .on("mousedown", ".tab-desktop-icon:not(.tab-desktop-icon-more)", this.onDesktopIconClick.bind(this));
+    .on("mouseup", ".fume-tab", this.onTabClick.bind(this))
+    .on("mouseup", ".tab-desktop-icon:not(.tab-desktop-icon-more)", this.onDesktopIconClick.bind(this));
   }
 
   r.onTabBtnClick = function(tab){

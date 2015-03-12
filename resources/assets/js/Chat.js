@@ -13,6 +13,8 @@ var System = require("./SystemMessage");
 var Scrollbar = require("./Scrollbar.js");
 var Flag = require("./Flags.js");
 var FumeTab = require("./FumeTabManager");
+var Desktop = require("./DesktopTab"); //ref only
+var context = require("./Contextmenu");
 
 
 var Chat = (function(){
@@ -34,6 +36,7 @@ var Chat = (function(){
   r._tabsize = 4;
   r._typingTimeFlag = 0;
   r._chatFlag = null;
+  r._ctxmenuRef = null;
 
 
   r.socket = null;
@@ -78,8 +81,42 @@ var Chat = (function(){
     Tab.set(document.querySelector(".chatbox"));
 
     this.$chat.on("scroll", this.onScroll.bind(this));
+    this.$chat.on("click", ".box button.app-button", this.onAppButtonClick.bind(this));
 
+
+    this.setupContextmenu();
     this.onStart();
+  }
+
+  r.setupContextmenu = function(){
+    var self = this;
+    context.init({
+      fadeSpeed: 100,
+      filter: function($obj){
+      },
+      above: 'auto',
+      preventDoubleContext: true,
+      compress: false
+    });
+    context.attach(".fume-tab-content .tab-desktop-icon:not(.tab-desktop-icon-more)", [{
+      text: "Share",
+      action: function(e){
+        var id = $(this).data().id, cmd = "share";
+        var title = $(this).data().title || null;
+        if(title) {
+          $(".chatbox").text("app::" + cmd + "(" + id + ")->" + title);
+        }
+        else {
+          $(".chatbox").text("app::" + cmd + "(" + id + ")");
+        }
+        self.sendMessage();
+      }
+    }, {
+      text: "Remove",
+      action: function(e){
+        Message.executeAppCommand("remove", $(this).data().id);
+      }
+    }]);
   }
 
   r.start = function(){
@@ -111,6 +148,7 @@ var Chat = (function(){
     var chat = document.querySelector(".chats");
     chat.innerHTML = Message.parseLink(chat.innerHTML);
     this.convertAllYoutubeLinks();
+    this.displayAppButtons();
     imagesloaded(document.querySelectorAll(".chats"), this.onLoad.bind(this));
   }
 
@@ -128,6 +166,14 @@ var Chat = (function(){
     }
     //this.setFlag(flags.SCROLLING);
     Scrollbar.isScrolling = true;
+  }
+
+  r.onAppButtonClick = function(e){
+    var $target = $(e.target);
+    var cmd = $target.data().cmd;
+    var id = $target.data().id;
+
+    Message.executeAppCommand(cmd, id);
   }
 
   r.onKeypress = function(e){
@@ -193,10 +239,16 @@ var Chat = (function(){
     msg.message = raw;*/
     msg._legacy = false;
 
+    /*if(msg.isCmd) {
+      msg.remove();
+      return;
+    }*/
+
     this.socket.emit(Flag.channel.message, msg.get(), function(err){
       if(err){
         //self.setChatState(chatState.ERROR_SC, msg.id);
         msg.setState(Flag.chatState.ERROR_SC);
+        System({user: "System", message: "System >> Socket connection error", id: "cmd"});
         throw err;
       }
       //self.setChatState(chatState.SAVED_SC, msg.id);
@@ -394,6 +446,12 @@ var Chat = (function(){
       }.bind(this));
     });
 
+  }
+
+  r.displayAppButtons = function(){
+    this.$chat.children().each(function(index, box){
+      Message.displayButton(box);
+    });
   }
 
   r.empty = function(){

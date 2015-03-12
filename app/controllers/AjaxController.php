@@ -51,10 +51,21 @@
       echo json_encode($user->loadDesktop());
     }
 
+    public function installApp($id) {
+      $user = new User();
+      echo json_encode($user->installApp($id));
+    }
+
+    public function removeApp($id) {
+      $user = new User();
+      $user->removeApp($id);
+    }
+
     public function saveAppAs() {
       $title = input("title", false);
       $code = input("code", false);
       $user = new User();
-      $user->saveAppAs($title, $code);
+      $result = $user->saveAppAs($title, $code);
+      echo json_encode($result);
     }
   }

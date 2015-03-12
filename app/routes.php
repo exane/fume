@@ -13,4 +13,6 @@
   $route->post('/createDBEntry', 'ChatController@createDBEntry');
   $route->get('/loadDesktopApp/{$contentID}', 'AjaxController@loadDesktopApp');
   $route->get('/loadDesktop', 'AjaxController@loadDesktop');
+  $route->get('/installApp/{$id}', 'AjaxController@installApp');
+  $route->get('/removeApp/{$id}', 'AjaxController@removeApp');
   $route->post('/saveAppAs', 'AjaxController@saveAppAs');
