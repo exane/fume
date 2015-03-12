@@ -104,10 +104,10 @@ var Chat = (function(){
         var id = $(this).data().id, cmd = "share";
         var title = $(this).data().title || null;
         if(title) {
-          $(".chatbox").text("app::" + cmd + "(" + id + ")->" + title);
+          $(".chatbox").val("app::" + cmd + "(" + id + ")->" + title);
         }
         else {
-          $(".chatbox").text("app::" + cmd + "(" + id + ")");
+          $(".chatbox").val("app::" + cmd + "(" + id + ")");
         }
         self.sendMessage();
       }
