@@ -137,6 +137,26 @@ var Message = (function(){
     return +$(".box:not([data-id='cmd']):not(.typing)").last().attr("data-id") + 1;
   }
 
+  r._convertYoutubeLinks = function(){
+    var youtubeBox;
+
+    //if(!this.isFlag(flags.YOUTUBE_LINK)) return;
+    if(!this._hasYoutubeLink) return;
+
+    youtubeBox = $(".box[data-id='" + this._id + "']");
+
+    youtubeBox.find(".youtube-link").each(function(index, value){
+      $.ajax({
+        url: "../public/getYoutubeTitle/" + $(this).attr("href") + "/" + index
+      }).done(function(val){
+        val = JSON.parse(val);
+        youtubeBox.find(".youtube-link:eq(" + val.index + ")").find("em").text(val.title);
+      });
+    });
+
+    //this.removeFlag(flags.YOUTUBE_LINK);
+  }
+
   r._parseLink = Message.parseLink = function(input, isHandy){
     isHandy = isHandy || false;
     var self = this;
@@ -173,26 +193,6 @@ var Message = (function(){
         }
       }
     });
-  }
-
-  r._convertYoutubeLinks = function(){
-    var youtubeBox;
-
-    //if(!this.isFlag(flags.YOUTUBE_LINK)) return;
-    if(!this._hasYoutubeLink) return;
-
-    youtubeBox = $(".box[data-id='" + this._id + "']");
-
-    youtubeBox.find(".youtube-link").each(function(index, value){
-      $.ajax({
-        url: "../public/getYoutubeTitle/" + $(this).attr("href") + "/" + index
-      }).done(function(val){
-        val = JSON.parse(val);
-        youtubeBox.find(".youtube-link:eq(" + val.index + ")").find("em").text(val.title);
-      });
-    });
-
-    //this.removeFlag(flags.YOUTUBE_LINK);
   }
 
   r._parseAppCommand = Message.parseAppCommand = function(msg){

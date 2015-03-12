@@ -151,6 +151,11 @@ var DesktopTab = (function(){
     });
   }
 
+  /**
+   *
+   * In-chat-syntax:
+   * app::cmd(id)[->name]
+   */
   r.commands = function(){
     return {
       add: this._installApp,
