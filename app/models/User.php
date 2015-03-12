@@ -32,7 +32,7 @@
     }
 
     public function loadDesktopApp($contentID) {
-      $sql = 'select content from desktopapps where id = :id';
+      $sql = 'select content from desktopApps where id = :id';
       $query = $this->db->prepare($sql);
       $query->execute([":id" => $contentID]);
 
@@ -40,7 +40,7 @@
     }
 
     public function loadDesktop() {
-      $sql = 'select title, app id from desktop left join benutzer on user = benutzer.id left join desktopapps on app = desktopapps.id where name = :username';
+      $sql = 'select title, app id from desktop left join benutzer on user = benutzer.id left join desktopApps on app = desktopApps.id where name = :username';
       $query = $this->db->prepare($sql);
       $query->execute([":username" => $_COOKIE['username']]);
 
@@ -48,7 +48,7 @@
     }
 
     public function saveAppAs($title, $code) {
-      $sql = 'insert into desktopapps(title, content)values(:title, :content)';
+      $sql = 'insert into desktopApps(title, content)values(:title, :content)';
       $query = $this->db->prepare($sql);
       $query->execute([":title" => $title, ":content" => $code]);
       $lastID = $this->db->lastInsertId();
