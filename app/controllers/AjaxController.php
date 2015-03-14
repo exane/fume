@@ -61,11 +61,16 @@
       $user->removeApp($id);
     }
 
+    public function editApp() {
+      $user = new User();
+      $user->editApp(input("appid"), input("title"), input("content"));
+    }
+
     public function saveAppAs() {
       $title = input("title", false);
-      $code = input("code", false);
+      $content = input("content", false);
       $user = new User();
-      $result = $user->saveAppAs($title, $code);
+      $result = $user->saveAppAs($title, $content);
       echo json_encode($result);
     }
   }

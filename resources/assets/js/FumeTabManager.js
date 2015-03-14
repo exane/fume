@@ -21,10 +21,30 @@ var FumeTabManager = (function(){
   r.add = function(title, contentID, isDesktop){
     isDesktop = isDesktop || false;
     var newTab = isDesktop ? Desktop(title, this._ids++) : Tab(title, this._ids++, isDesktop);
+
     this._tabs.push(newTab);
     this.setActive(newTab);
     newTab.getBtnRef().on("click", this.onTabBtnClick.bind(this, newTab));
+
+    if(!isDesktop && Number(contentID) != contentID){ //youtube chat link
+      newTab._appID = false;
+  }
+    else {
+      newTab._appID = contentID;
+    }
     newTab.addContent(contentID);
+
+    if(isDesktop){
+      this._desktop = newTab;
+    }
+
+    return newTab;
+  }
+
+  r._addStaticTab = function(title, content){
+
+    var newTab = Tab(title, this._ids++);
+    newTab._appID = false;
 
     return newTab;
   }
@@ -119,6 +139,35 @@ var FumeTabManager = (function(){
       if(tab.active) return result = tab;
     });
     return result;
+  }
+
+  r.getDesktop = function(){
+    return this._desktop;
+  }
+
+  r.getTabByTitle = function(title){
+    var res = false;
+    this._tabs.forEach(function(tab){
+      if(tab.getTitle() === title){
+        return res = tab;
+      }
+    })
+    return res;
+  }
+
+  /**
+   *
+   * @param {int|string} arg as appid/title
+   * @returns {Array} tabs
+   */
+  r.getTabs = function(arg){
+    var res = [];
+    var type = typeof arg;
+    this._tabs.forEach(function(tab){
+      if(type === "number" && tab.getAppID() === arg) res.push(tab);
+      if(type === "string" && tab.getTitle() === arg) res.push(tab);
+    })
+    return res;
   }
 
   return FumeTabManager;

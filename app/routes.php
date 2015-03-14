@@ -16,3 +16,4 @@
   $route->get('/installApp/{$id}', 'AjaxController@installApp');
   $route->get('/removeApp/{$id}', 'AjaxController@removeApp');
   $route->post('/saveAppAs', 'AjaxController@saveAppAs');
+  $route->post('/editApp', 'AjaxController@editApp');

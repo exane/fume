@@ -9,6 +9,10 @@
   }
 }
 
+.fume-tabs {
+  position: relative;
+}
+
 .fume-tab {
   float: left;
   border: 1px solid black;
@@ -17,12 +21,18 @@
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   padding: 5px;
+  //overflow-y: hidden;
+  max-height: 31px;
+  height: 31px;
+  line-height: 16px;
+  position: relative;
 
   &.fume-tab-active {
     background: #94c644;
   }
   &:hover {
     background: #b7f754;
+    max-height: none;
     .fume-tab-btn {
       display: block;
     }
@@ -108,6 +118,8 @@
 
 .vex-content {
   textarea {
-    min-height: 500px !important;
+    min-height: 400px !important;
+    font-size: 18px !important;
+    line-height: 20px;
   }
 }

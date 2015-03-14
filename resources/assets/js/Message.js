@@ -4,6 +4,7 @@ var $ = require("jquery");
 var Config = require("./Config.js");
 var Scrollbar = require("./Scrollbar.js");
 var Flag = require("./Flags.js");
+var Helper = require("./Helper");
 
 var Message = (function(){
   var Message = function(opt){
@@ -218,7 +219,6 @@ var Message = (function(){
   r._parseCommand = Message.parseCommand = function(msg){
     msg = msg || this._message;
     var regex = /^app::(.*)\((.*)\)-?>?(.*)/i;
-    //var regex = /^app::(.*)\((.*)\)/i;
     return regex.exec(msg);
   }
 
@@ -235,7 +235,7 @@ var Message = (function(){
     replace.attr({"data-cmd": msg[1], "data-id": msg[2]})
     if(msg[3]){
       replace.attr("data-title", msg[3]);
-      replace.text(msg[1] + ": " + msg[3]);
+      replace.text(msg[1] + ": " + Helper.truncate(msg[3], 30));
     }
     box.replaceWith(replace);
   }

@@ -15,7 +15,7 @@ var Flag = require("./Flags.js");
 var FumeTab = require("./FumeTabManager");
 var Desktop = require("./DesktopTab"); //ref only
 var context = require("./Contextmenu");
-
+var Helper = require("./Helper");
 
 var Chat = (function(){
   var Chat = function(){
@@ -103,7 +103,7 @@ var Chat = (function(){
       action: function(e){
         var id = $(this).data().id, cmd = "share";
         var title = $(this).data().title || null;
-        if(title) {
+        if(title){
           $(".chatbox").val("app::" + cmd + "(" + id + ")->" + title);
         }
         else {
@@ -116,7 +116,63 @@ var Chat = (function(){
       action: function(e){
         Message.executeAppCommand("remove", $(this).data().id);
       }
+    }, {
+      text: "Edit",
+      action: function(e) {
+        self._ctxMenuEdit.call(this, self);
+      }
     }]);
+    context.attach(".fume-tab-active:not(.fume-tab-desktop)", [{
+      text: "Edit",
+      action: function(e) {
+        self._ctxMenuEdit.call(this, self);
+      }
+    }]);
+    //todo: ctrl + s save shortcut
+    /*$(document).on("keydown", ".vex-content textarea[name='content']", function(e){
+      //e.which == 83 => s
+      if(e.which === 83 && e.ctrlKey) {
+        e.preventDefault();
+        var $this = $(this).parent().find("input");
+        //self._ctxMenuEdit.call($this, self)
+      }
+    })*/
+  }
+
+  r._ctxMenuEdit = function(self){
+    var title = $(this).data().title;// || $(this).text();
+    var tab = self.tabs.getTabByTitle(title);
+
+    if(!tab) {
+      tab = self.tabs.add(title, $(this).data().id);
+      $.when(tab.loaded)
+      .done(self._ctxMenuEdit.bind(this, self))
+      return;
+    }
+    var desktop = self.tabs.getDesktop();
+    var appID = tab.getAppID();
+    var modal = desktop.openModal(function(data){
+      $.ajax("../public/editApp", {
+        type: "POST",
+        data: {
+          appid: appID,
+          title: data.title,
+          content: data.content
+        }
+      })
+
+      var tabs = self.tabs.getTabs(appID);
+      tabs.forEach(function(_tab){
+        _tab.setTitle(data.title, true);
+        _tab.setContent(data.content);
+      });
+      var appIcon = desktop.getAppShortcut(appID);
+      var text = Helper.truncate(data.title);
+      appIcon.text(text).attr("data-title", data.title).data().title = data.title;
+    });
+    desktop.startBehaveOn(modal);
+    modal.find("input[name=title]").val(title);
+    modal.find("textarea[name=content]").val(tab.getContent());
   }
 
   r.start = function(){

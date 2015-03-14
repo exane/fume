@@ -47,16 +47,24 @@
       return $query->fetchAll();
     }
 
-    public function saveAppAs($title, $code) {
+    public function saveAppAs($title, $content) {
       $sql = 'insert into desktopApps(title, content)values(:title, :content)';
       $query = $this->db->prepare($sql);
-      $query->execute([":title" => $title, ":content" => $code]);
+      $query->execute([":title" => $title, ":content" => $content]);
       $lastID = $this->db->lastInsertId();
       $this->installApp($lastID);
       return ["id" => $lastID, "title" => $title];
     }
 
+    public function editApp ($appid, $title, $content) {
+      $content = html_entity_decode($content);
+      $sql = 'update desktopApps set title = :title, content = :content where id = :appid';
+      $query = $this->db->prepare($sql);
+      $query->execute([":title" => $title, ":content" => $content, ":appid" => $appid]);
+    }
+
     public function installApp($id) {
+      if($this->hasApp($id)) return $this->getAppTitle($id);
       $sql = 'insert into desktop(user, app)values(:userid, :appid)';
       $query = $this->db->prepare($sql);
       $query->execute([":userid" => $this->getUserID(), ":appid" => $id]);
@@ -74,6 +82,15 @@
       $query = $this->db->prepare($sql);
       $query->execute([":id" => $id]);
       return $query->fetch();
+    }
+
+    public function hasApp($appid) {
+      $sql = "select count(app) apps from desktop where user = :userid and app = :appid";
+      $query = $this->db->prepare($sql);
+      $query->execute([":userid" => $this->getUserID(), ":appid" => $appid]);
+      $res = $query->fetch()->apps;
+      if($res > 0) return true;
+      return false;
     }
 
     public function getUserID() {
