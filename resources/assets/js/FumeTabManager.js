@@ -11,6 +11,8 @@ var FumeTabManager = (function(){
     this._tabs = [];
     this._ids = 0;
     this.initEvents();
+
+    this._loadSavedApps();
   };
   var r = FumeTabManager.prototype;
 
@@ -37,6 +39,10 @@ var FumeTabManager = (function(){
     if(isDesktop){
       this._desktop = newTab;
     }
+    else {
+      this._saveTab(contentID);
+    }
+
 
     return newTab;
   }
@@ -57,6 +63,7 @@ var FumeTabManager = (function(){
         if(t.active && self._tabs.length){
           self._tabs[0].active = true;
         }
+        self._removeTab(t.getAppID());
         return t.remove();
       }
     })
@@ -168,6 +175,37 @@ var FumeTabManager = (function(){
       if(type === "string" && tab.getTitle() === arg) res.push(tab);
     })
     return res;
+  }
+
+  r._loadSavedApps = function() {
+    var self = this;
+    $.ajax("../public/getSavedTabs", {
+      type: "post"
+    })
+    .done(function(res) {
+      res = JSON.parse(res);
+      res.forEach(function(item) {
+        self.add(null, item.app);
+      });
+    });
+  }
+
+  r._saveTab = function(appID) {
+    $.ajax("../public/saveTab", {
+      type: "post",
+      data: {
+        appID: appID
+      }
+    })
+  }
+
+  r._removeTab = function(appID) {
+    $.ajax("../public/removeTab", {
+      type: "post",
+      data: {
+        appID: appID
+      }
+    })
   }
 
   return FumeTabManager;

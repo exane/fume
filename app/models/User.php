@@ -32,7 +32,7 @@
     }
 
     public function loadDesktopApp($contentID) {
-      $sql = 'select content from desktopApps where id = :id';
+      $sql = 'select content, title from desktopApps where id = :id';
       $query = $this->db->prepare($sql);
       $query->execute([":id" => $contentID]);
 
@@ -98,5 +98,24 @@
       $query = $this->db->prepare($sql);
       $query->execute([":name" => $_COOKIE["username"]]);
       return $query->fetch()->id;
+    }
+
+    public function getSavedTabs() {
+      $sql = "select app from desktop where user = :userid and open = 1";
+      $query = $this->db->prepare($sql);
+      $query->execute([":userid" => $this->getUserID()]);
+      return $query->fetchAll();
+    }
+
+    public function saveTab($appID) {
+      $sql = "update desktop set open = 1 where app = :appID and user = :userid";
+      $query = $this->db->prepare($sql);
+      $query->execute([":userid" => $this->getUserID(), ":appID" => $appID]);
+    }
+
+    public function removeTab($appID) {
+      $sql = "update desktop set open = 0 where app = :appID and user = :userid";
+      $query = $this->db->prepare($sql);
+      $query->execute([":userid" => $this->getUserID(), ":appID" => $appID]);
     }
   }

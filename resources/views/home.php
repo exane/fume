@@ -7,11 +7,11 @@
     <input type="text" placeholder="Suche">
   </div>
 </header>
-<aside class="site-logo">
-  <a href="<?php echo URL; ?>">
-    <img src="<?php echo IMG_URL; ?>logo.png" width="91" height="57" alt="fume" class="logo">
+<!--<aside class="site-logo">
+  <a href="<?php /*echo URL; */?>">
+    <img src="<?php /*echo IMG_URL; */?>logo.png" width="91" height="57" alt="fume" class="logo">
   </a>
-</aside>
+</aside>-->
 <section class="site-content">
   <!--  <div class="youtube-wrap"></div>-->
   <!--<div class="fume-tab">

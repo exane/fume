@@ -1,7 +1,8 @@
 .site-content {
   float: left;
-  padding: 30px;
-  width: calc(100% - 650px);
+  padding: 20px;
+  padding-bottom: 0;
+  width: calc(100% - 400px);
   height: calc(100% - 100px);
 
   @include mq(mobile) {

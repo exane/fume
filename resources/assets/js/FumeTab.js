@@ -87,6 +87,9 @@ var FumeTab = (function(){
       res = JSON.parse(res);
       this.setContent(res.content);
       this.loaded.resolve("content loaded!");
+      if(this.getTitle() === "unnamed"){
+        this.setTitle(res.title, true);
+      }
     }.bind(this));
   }
 

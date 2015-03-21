@@ -1,0 +1,1 @@
+ALTER TABLE `desktop` ADD `open` INT(1) NOT NULL DEFAULT '0' ;

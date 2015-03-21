@@ -73,4 +73,18 @@
       $result = $user->saveAppAs($title, $content);
       echo json_encode($result);
     }
+
+    public function getSavedTabs() {
+      $user = new User();
+      echo json_encode($user->getSavedTabs());
+    }
+
+    public function saveTab() {
+      $user = new User();
+      $user->saveTab(input("appID"));
+    }
+    public function removeTab() {
+      $user = new User();
+      $user->removeTab(input("appID"));
+    }
   }
