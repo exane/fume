@@ -17,6 +17,10 @@
   display: none;
 }
 
+input, textarea {
+  outline: 0;
+}
+
 .chats {
   float: left;
   width: 100%;
