@@ -1,12 +1,13 @@
 <?php
+  use Madcoda\Youtube;
 
   /**
    * Return the title of a youtube video.
    */
   function getYoutubeTitle($id)
   {
-    $videoTitle = file_get_contents('http://gdata.youtube.com/feeds/api/videos/' . $id . '?v=2&fields=title');
-    preg_match('/<title>(.+?)<\/title>/is', $videoTitle, $titleOfVideo);
+    $youtube = new Youtube(array('key' => YT_API));
+    $video = $youtube->getVideoInfo($id);
 
-    return $titleOfVideo[1];
+    return $video->snippet->title;
   }

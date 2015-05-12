@@ -1,5 +1,6 @@
 {
   "require": {
-    "pusher/pusher-php-server": "dev-master"
+    "pusher/pusher-php-server": "dev-master",
+    "madcoda/php-youtube-api": "~1.1"
   }
 }
