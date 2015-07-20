@@ -8,6 +8,7 @@ var Helper = (function(){
    */
 
   r.truncate = function(string, length){
+    string = string || "";
     var res = string;
     length = length || 15;
 
