@@ -1,0 +1,1 @@
+ALTER TABLE `desktopApps` ADD `private` INT(11) NOT NULL ;

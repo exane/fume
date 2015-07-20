@@ -14,9 +14,11 @@
   $route->get('/loadDesktopApp/{$contentID}', 'AjaxController@loadDesktopApp');
   $route->get('/loadDesktop', 'AjaxController@loadDesktop');
   $route->get('/installApp/{$id}', 'AjaxController@installApp');
-  $route->get('/removeApp/{$id}', 'AjaxController@removeApp');
+  $route->get('/removeApp/{$id}/{$allUser}', 'AjaxController@removeApp');
+  $route->get('/deleteApp/{$id}/', 'AjaxController@deleteApp');
   $route->post('/saveAppAs', 'AjaxController@saveAppAs');
   $route->post('/editApp', 'AjaxController@editApp');
   $route->post('/getSavedTabs', 'AjaxController@getSavedTabs');
   $route->post('/saveTab', 'AjaxController@saveTab');
   $route->post('/removeTab', 'AjaxController@removeTab');
+  $route->post('/loadAllApps', 'AjaxController@loadAllApps');

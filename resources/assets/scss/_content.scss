@@ -67,6 +67,7 @@
   margin-top: 0px;
   height: 100%;
   border-top: 1px solid black;
+  overflow-y: auto;
 
   .fume-tab-content-private {
     display: none;
@@ -122,5 +123,23 @@
     min-height: 400px !important;
     font-size: 18px !important;
     line-height: 20px;
+  }
+}
+
+.fume-content-applist {
+  li {
+    border-bottom: 1px solid black;
+
+    &:hover {
+      background: #94c644;
+    }
+  }
+  span {
+    padding: 5px 30px;
+    display: inline-block;
+  }
+
+  .fume-tab-content-has-app {
+    background: #a7e554;
   }
 }

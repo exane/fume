@@ -98,36 +98,40 @@ var Chat = (function(){
       preventDoubleContext: true,
       compress: false
     });
-    context.attach(".fume-tab-content .tab-desktop-icon:not(.tab-desktop-icon-more)", [{
-      text: "Share",
-      action: function(e){
-        var id = $(this).data().id, cmd = "share";
-        var title = $(this).data().title || null;
-        if(title){
-          $(".chatbox").val("app::" + cmd + "(" + id + ")->" + title);
+    context.attach(".fume-tab-content .tab-desktop-icon:not(.tab-desktop-icon-more)", [
+      {
+        text: "Share",
+        action: function(e){
+          var id = $(this).data().id, cmd = "share";
+          var title = $(this).data().title || null;
+          if(title){
+            $(".chatbox").val("app::" + cmd + "(" + id + ")->" + title);
+          }
+          else {
+            $(".chatbox").val("app::" + cmd + "(" + id + ")");
+          }
+          self.sendMessage();
         }
-        else {
-          $(".chatbox").val("app::" + cmd + "(" + id + ")");
+      }, {
+        text: "Remove",
+        action: function(e){
+          Message.executeAppCommand("remove", $(this).data().id);
         }
-        self.sendMessage();
+      }, {
+        text: "Edit",
+        action: function(e){
+          self._ctxMenuEdit.call(this, self);
+        }
       }
-    }, {
-      text: "Remove",
-      action: function(e){
-        Message.executeAppCommand("remove", $(this).data().id);
-      }
-    }, {
-      text: "Edit",
-      action: function(e) {
-        self._ctxMenuEdit.call(this, self);
-      }
-    }]);
-    context.attach(".fume-tab-active:not(.fume-tab-desktop)", [{
-      text: "Edit",
-      action: function(e) {
-        self._ctxMenuEdit.call(this, self);
-      }
-    }]);
+    ]);
+    context.attach(".fume-tab-app", [
+      {
+        text: "Edit",
+        action: function(e){
+          self._ctxMenuEdit.call(this, self);
+          console.log(this);
+        }
+      }]);
     //todo: ctrl + s save shortcut
     /*$(document).on("keydown", ".vex-content textarea[name='content']", function(e){
       //e.which == 83 => s
@@ -137,13 +141,40 @@ var Chat = (function(){
         //self._ctxMenuEdit.call($this, self)
       }
     })*/
+    $.when(this.tabs.getDesktop().loaded)
+    .then(function(){
+      context.attach(".fume-tab-desktop", [{
+        text: "List all apps",
+        action: function(e){
+          self.tabs.add("App List", "appList");
+        }
+      }]);
+    })
+    .then(function() {
+      context.attach(".fume-tab-content-app", [
+        {
+          text: "Install",
+          action: function(e){
+            self.tabs.install($(this).data().id)
+            $(this).addClass("fume-tab-content-has-app");
+          }
+        }, {
+          text: "Deinstall",
+          action: function(e){
+            $(this).removeClass("fume-tab-content-has-app");
+            $(this).remove();
+            self.tabs.deinstall($(this).data().id)
+          }
+        }
+      ]);
+    });
   }
 
   r._ctxMenuEdit = function(self){
     var title = $(this).data().title;// || $(this).text();
     var tab = self.tabs.getTabByTitle(title);
 
-    if(!tab) {
+    if(!tab){
       tab = self.tabs.add(title, $(this).data().id);
       $.when(tab.loaded)
       .done(self._ctxMenuEdit.bind(this, self))

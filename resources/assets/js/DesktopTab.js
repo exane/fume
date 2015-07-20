@@ -51,6 +51,7 @@ var DesktopTab = (function(){
       res = JSON.parse(res);
       this._addCreateButton();
       this._renderDesktop(res);
+      this.loaded.resolve("content loaded!");
     }.bind(this));
   }
 
@@ -135,7 +136,7 @@ var DesktopTab = (function(){
     var res = null;
     var type = typeof arg;
     this._apps.forEach(function(app){
-      if(type === "number" && app.appid === arg) return res = app.ref;
+      if((type === "number" || arg === parseInt(arg)) && app.appid === arg) return res = app.ref;
       if(type === "string" && app.title === arg) return res = app.ref;
     })
     return res;
@@ -189,15 +190,21 @@ var DesktopTab = (function(){
     return res;
   }
 
-  r._removeApp = function(id){
+  r._removeApp = function(id, allUser){
+    allUser = allUser || false;
     this._privateContentRef.children().each(function(index, app){
       app = $(app);
       if(app.data().id == id){
         app.remove();
-        $.ajax("../public/removeApp/" + id);
+        $.ajax("../public/removeApp/" + id + "/" + allUser);
         return;
       }
     });
+  }
+
+  r._deleteApp = function(appID) {
+    this._removeApp(appID, true);
+    $.ajax("../public/deleteApp/" + appID);
   }
 
   /**

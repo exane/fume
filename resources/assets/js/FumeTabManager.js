@@ -1,5 +1,6 @@
 var Tab = require("./FumeTab");
 var Desktop = require("./DesktopTab");
+var AppList = require("./AppListTab");
 var $ = require("jquery");
 
 
@@ -22,7 +23,14 @@ var FumeTabManager = (function(){
 
   r.add = function(title, contentID, isDesktop){
     isDesktop = isDesktop || false;
-    var newTab = isDesktop ? Desktop(title, this._ids++) : Tab(title, this._ids++, isDesktop);
+    var newTab;
+
+    if(contentID === "appList") {
+      newTab = AppList(this.getDesktop());
+    }
+    else {
+      newTab = isDesktop ? Desktop(title, this._ids++) : Tab(title, this._ids++, isDesktop);
+    }
 
     this._tabs.push(newTab);
     this.setActive(newTab);
@@ -81,6 +89,9 @@ var FumeTabManager = (function(){
       tab.active = true;
     }
     if(Number(tab) === tab){
+      this.setActive(this.getTabById(tab));
+    }
+    if(typeof tab === "string") {
       this.setActive(this.getTabById(tab));
     }
   }
@@ -197,6 +208,14 @@ var FumeTabManager = (function(){
         appID: appID
       }
     })
+  }
+
+  r.install = function(appID) {
+    this.getDesktop()._installApp(appID);
+  }
+
+  r.deinstall = function(appID) {
+    this.getDesktop()._deleteApp(appID);
   }
 
   r._removeTab = function(appID) {

@@ -75,6 +75,7 @@ var FumeTab = (function(){
 
   r.addContent = function(contentID){
     contentID = contentID || null
+    this._ref.addClass("fume-tab-app");
 
     this._contentRef.append(this._privateContentRef);
 

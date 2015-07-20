@@ -71,8 +71,11 @@
       return $this->getAppTitle($id);
     }
 
-    public function removeApp($id) {
+    public function removeApp($id, $allUser) {
       $sql = 'delete from desktop where app = :appid and user = :userid';
+      if($allUser == true) {
+        $sql = 'delete from desktop where app = :appid';
+      }
       $query = $this->db->prepare($sql);
       $query->execute([":userid" => $this->getUserID(), ":appid" => $id]);
     }
@@ -117,5 +120,19 @@
       $sql = "update desktop set open = 0 where app = :appID and user = :userid";
       $query = $this->db->prepare($sql);
       $query->execute([":userid" => $this->getUserID(), ":appID" => $appID]);
+    }
+
+    public function loadAllApps() {
+      $sql = "select * from desktopApps where private = 0 or private = :userid";
+      $query = $this->db->prepare($sql);
+      $query->execute([":userid" => $this->getUserID()]);
+
+      return $query->fetchAll();
+    }
+
+    public function deleteApp($appID) {
+      $sql = "delete from desktopApps where id = :appID";
+      $query = $this->db->prepare($sql);
+      $query->execute([":appID" => $appID]);
     }
   }

@@ -56,9 +56,13 @@
       echo json_encode($user->installApp($id));
     }
 
-    public function removeApp($id) {
+    public function removeApp($id, $allUser = false) {
       $user = new User();
-      $user->removeApp($id);
+      $user->removeApp($id, $allUser);
+    }
+    public function deleteApp($appID) {
+      $user = new User();
+      $user->deleteApp($appID);
     }
 
     public function editApp() {
@@ -86,5 +90,9 @@
     public function removeTab() {
       $user = new User();
       $user->removeTab(input("appID"));
+    }
+    public function loadAllApps() {
+      $user = new User();
+      echo json_encode($user->loadAllApps());
     }
   }
