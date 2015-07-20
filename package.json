@@ -10,8 +10,8 @@
     "express": "4.4.4",
     "minimist": "1.1.0",
     "serve-static": "1.2.3",
-    "socketcluster": ">= 1.0.5",
-    "socketcluster-client": ">= 1.0.0"
+    "socketcluster": "*",
+    "socketcluster-client": "*"
   },
   "devDependencies": {
     "autolinker": "^0.15.0",
