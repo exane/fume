@@ -69,7 +69,7 @@ gulp.task('sprite', function(){
 });
 
 gulp.task('sprite memes', function(){
-    var spriteData = gulp.src('./resources/assets/img/meme/*.png').pipe(spritesmith({
+    /*var spriteData = gulp.src('./resources/assets/img/meme/!*.png').pipe(spritesmith({
         imgName: 'meme.png',
         cssName: '_memes.scss',
         imgPath: "../img/meme.png",
@@ -81,7 +81,9 @@ gulp.task('sprite memes', function(){
         }
     }));
     spriteData.img.pipe(gulp.dest('public/assets/img/'));
-    spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
+    spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));*/
+    gulp.src("./resources/assets/img/meme/*.*")
+    .pipe(gulp.dest("./public/assets/img/meme"));
 });
 
 gulp.task("copyStaticImages", function(){
