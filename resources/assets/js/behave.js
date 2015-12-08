@@ -619,7 +619,7 @@
     module.exports = Behave;
   }
 
-  if (typeof ender === 'undefined') {
+  if (typeof ender === 'undefined' && this !== undefined) {
     this.Behave = Behave;
     this.BehaveHooks = BehaveHooks;
   }

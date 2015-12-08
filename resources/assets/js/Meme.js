@@ -32,7 +32,8 @@ var Meme = (function(){
         var list = Config().getMeme();
         text = this.compile(text);
         for(var word in list) {
-            text = this._replaceAll(list[word], "<strong class='meme meme-" + word + "'></strong>", text);
+            //text = this._replaceAll(list[word], "<strong class='meme meme-" + word + "'></strong>", text);
+            text = this._replaceAll(list[word], "<img class='meme chat-img' src='../public/assets/img/meme/"+ word +"'>", text);
         }
 
         return text;
