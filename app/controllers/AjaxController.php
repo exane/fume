@@ -17,12 +17,14 @@
     }
 
     public function getMeme() {
-      $ini = parse_ini_file(memes_path . 'memes.ini');
+      $ini = parse_ini_file(memes_url . 'memes.ini', true);
       $res = [];
 
       foreach($ini as $key => $val) {
         $res[$key] = $val;
       }
+
+      $res["URL"] = memes_url;
 
       echo json_encode($res);
     }

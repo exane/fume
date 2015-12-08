@@ -23,12 +23,12 @@
 
         public function displayMeme($text) {
             if(!$this->memeData) {
-                $this->memeData = parse_ini_file(memes_path . "memes.ini");
+                $this->memeData = parse_ini_file(memes_url . "memes.ini");
             }
 
             foreach($text as $message) {
                 foreach($this->memeData as $memekey => $memeval) {
-                    $message->inhalt = str_replace($memeval, "<img class='chat-img meme' src='" . img_url ."meme/$memekey'>", $message->inhalt);
+                    $message->inhalt = str_replace($memeval, "<img title='$memeval' class='chat-img meme' src='" . memes_url ."$memekey'>", $message->inhalt);
                 }
             }
 

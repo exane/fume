@@ -68,8 +68,8 @@ gulp.task('sprite', function(){
     spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));
 });
 
-gulp.task('sprite memes', function(){
-    /*var spriteData = gulp.src('./resources/assets/img/meme/!*.png').pipe(spritesmith({
+/*gulp.task('sprite memes', function(){
+    /!*var spriteData = gulp.src('./resources/assets/img/meme/!*.png').pipe(spritesmith({
         imgName: 'meme.png',
         cssName: '_memes.scss',
         imgPath: "../img/meme.png",
@@ -81,10 +81,10 @@ gulp.task('sprite memes', function(){
         }
     }));
     spriteData.img.pipe(gulp.dest('public/assets/img/'));
-    spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));*/
-    gulp.src("./resources/assets/img/meme/*.*")
+    spriteData.css.pipe(gulp.dest('./resources/assets/scss/'));*!/
+    gulp.src("./resources/assets/img/meme/!*.*")
     .pipe(gulp.dest("./public/assets/img/meme"));
-});
+});*/
 
 gulp.task("copyStaticImages", function(){
     gulp.src("./resources/assets/img/static/*.*")
@@ -105,4 +105,4 @@ gulp.task("watch", function(){
     gulp.watch('./resources/assets/img/static/*.*', ["copyStaticImges"]);
 })
 
-gulp.task("default", ["copySound", "copyStaticImages", "browserify", "sass", "watch", "sprite", "sprite memes", "setup config"]);
+gulp.task("default", ["copySound", "copyStaticImages", "browserify", "sass", "watch", "sprite", "setup config"]);
