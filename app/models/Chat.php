@@ -28,7 +28,7 @@
 
             foreach($text as $message) {
                 foreach($this->memeData as $memekey => $memeval) {
-                    $message->inhalt = str_replace($memeval, "<img class='chat-img meme' src='" . img_url ."/meme/$memekey'>", $message->inhalt);
+                    $message->inhalt = str_replace($memeval, "<img class='chat-img meme' src='" . img_url ."meme/$memekey'>", $message->inhalt);
                 }
             }
 
